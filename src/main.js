@@ -1345,6 +1345,32 @@ if (drummingModal && drummingModalBtn && closeDrummingModalBtn && drummingVideo)
   });
 }
 
+// --- MY BRAH MODAL INTERACTION ENGINE ---
+const brahModal = document.getElementById('brah-modal');
+const brahModalBtn = document.getElementById('brah-modal-btn');
+const closeBrahModalBtn = document.getElementById('close-brah-modal');
+
+if (brahModal && brahModalBtn && closeBrahModalBtn) {
+  brahModalBtn.addEventListener('click', () => {
+    initAudio();
+    playSynthSound('powerup');
+    brahModal.classList.add('active');
+    triggerConfettiBlast();
+  });
+
+  closeBrahModalBtn.addEventListener('click', () => {
+    playSynthSound('laser');
+    brahModal.classList.remove('active');
+  });
+
+  brahModal.addEventListener('click', (e) => {
+    if (e.target === brahModal) {
+      playSynthSound('laser');
+      brahModal.classList.remove('active');
+    }
+  });
+}
+
 // --- MY FAVORITE THINGS CAROUSEL MODULE ---
 function initFavoriteThingsCarousel() {
   const slides = document.querySelectorAll('.carousel-slide');
