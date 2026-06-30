@@ -1641,7 +1641,7 @@ function initNoLikeyWidget() {
     chocolate: 'ALERT: TASTE BUDS REFUSE SWEET COCOA OVERLOAD! 🍫',
     redbuns: 'CRITICAL: CODE RED BUN DETECTED IN SECTOR 4! 🥯',
     milk: 'WARNING: HIGH RISK OF SOGGY CEREAL SPOILAGE! 🥣🥛',
-    lydia: 'ALERT: MY BIG SISTER DETECTED. SHIELD PROTOCOLS ACTIVE! 🛡️'
+    rebekah: 'ALERT: MY BIG SISTER DETECTED. SHIELD PROTOCOLS ACTIVE! 🛡️'
   };
 
   const itemClickMessages = {
@@ -1650,7 +1650,7 @@ function initNoLikeyWidget() {
     chocolate: 'ERROR: CHOCOLATE REJECTED! SEND WATER IMMEDIATELY! 🤢🍫',
     redbuns: 'EVACUATE! RED BUN QUARANTINE PROTOCOLS ENGAGED! 🥯💥',
     milk: 'DISGUSTING! SOGGINESS LEVEL OVER 9000! DRY ONLY! 🤮🥣',
-    lydia: 'ZAP! "RAPHA, DO YOUR PIANO!" SISTER BOSS MODE ACTIVE! 👩‍🦰⚡'
+    rebekah: 'ZAP! "RAPHA, DO YOUR PIANO!" SISTER BOSS MODE ACTIVE! 👩‍🦰⚡'
   };
 
   const itemSounds = {
@@ -1659,7 +1659,7 @@ function initNoLikeyWidget() {
     chocolate: 'bleh',
     redbuns: 'teleport',
     milk: 'bleh',
-    lydia: 'laser'
+    rebekah: 'laser'
   };
 
   nolikeyItems.forEach(item => {
@@ -1756,7 +1756,7 @@ function initGuestbookWidget() {
     },
     {
       id: 'family-sissy',
-      name: 'Big Sis Lydia 👧💖',
+      name: 'Big Sis Rebekah 👧💖',
       avatar: '👧',
       badge: 'SISSY 👾',
       message: "Rafa-pasta! Stop stealing my controllers but also you are the best partner-in-crime ever! Let's play Roblox later! 🎮🕹️😜",
