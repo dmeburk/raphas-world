@@ -1956,6 +1956,7 @@ body[data-bg="full"] .glass-panel {
 /* Message Item styling */
 .guestbook-msg {
   display: flex;
+  flex-shrink: 0; /* Extremely critical: prevents parent flexbox from squishing message heights */
   gap: 14px;
   padding: 16px;
   border-radius: var(--radius-md);
