@@ -192,6 +192,7 @@
             <button class="treat-btn" data-food="chicken" title="Feed Chicken Wings">🍗 Chicken Wings</button>
             <button class="treat-btn" data-food="soccer" title="Throw Soccer Ball">⚽ Soccer Ball</button>
             <button class="treat-btn" data-food="minecraft" title="Feed Minecraft Dirt Block">🧱 Dirt Block</button>
+            <button class="treat-btn" data-food="milk" title="Feed Plain Milk">🥛 Plain Milk</button>
           </div>
         </section>
 
@@ -542,6 +543,70 @@
                 </div>
               </div>
 
+              <!-- Slide 8: Plain Milk -->
+              <div class="carousel-slide" data-index="7" data-sound="powerup">
+                <div class="slide-illustration">
+                  <svg viewBox="0 0 100 100" class="fav-svg">
+                    <defs>
+                      <linearGradient id="milkGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="#ffffff"/>
+                        <stop offset="70%" stop-color="#f8fafc"/>
+                        <stop offset="100%" stop-color="#cbd5e1"/>
+                      </linearGradient>
+                      <linearGradient id="glassGrad" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0%" stop-color="rgba(255, 255, 255, 0.45)"/>
+                        <stop offset="30%" stop-color="rgba(255, 255, 255, 0.2)"/>
+                        <stop offset="70%" stop-color="rgba(56, 189, 248, 0.2)"/>
+                        <stop offset="100%" stop-color="rgba(56, 189, 248, 0.55)"/>
+                      </linearGradient>
+                      <linearGradient id="strawGrad" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#ef4444"/>
+                        <stop offset="50%" stop-color="#ffffff"/>
+                        <stop offset="100%" stop-color="#b91c1c"/>
+                      </linearGradient>
+                    </defs>
+                    <!-- Shadow -->
+                    <ellipse cx="50" cy="85" rx="25" ry="6" fill="rgba(0,0,0,0.25)" />
+                    
+                    <!-- Milk liquid inside glass (slightly smaller/lower than glass) -->
+                    <path d="M36.5 40 L38.5 76 Q50 82 61.5 76 L63.5 40 Q50 44 36.5 40 Z" fill="url(#milkGrad)" stroke="#f1f5f9" stroke-width="0.5" />
+                    <!-- Creamy highlight top ellipse -->
+                    <ellipse cx="50" cy="40" rx="13.5" ry="3.5" fill="#ffffff" opacity="0.95" />
+                    
+                    <!-- Red/White Striped Straw -->
+                    <g>
+                      <!-- Straw path, sticking out to top-left -->
+                      <path d="M52 45 L32 12 Q30 9 27 10 Q24 11 25 14 L44 48" fill="none" stroke="#f1f5f9" stroke-width="4.5" stroke-linecap="round" />
+                      <!-- Red stripes -->
+                      <path d="M52 45 L32 12 Q30 9 27 10 Q24 11 25 14 L44 48" fill="none" stroke="#ef4444" stroke-width="4.5" stroke-linecap="round" stroke-dasharray="3 6" />
+                    </g>
+                    
+                    <!-- Glass outer wall with glassmorphism/gradient reflection -->
+                    <path d="M32 28 L37.5 80 Q50 86 62.5 80 L68 28 Q50 32 32 28 Z" fill="url(#glassGrad)" stroke="rgba(255, 255, 255, 0.65)" stroke-width="1.5" />
+                    <!-- Glass top rim ellipse -->
+                    <ellipse cx="50" cy="28" rx="18" ry="4" fill="none" stroke="rgba(255, 255, 255, 0.75)" stroke-width="1.5" />
+                    <!-- Rim inside highlights -->
+                    <ellipse cx="50" cy="28" rx="16" ry="3" fill="none" stroke="rgba(56, 189, 248, 0.4)" stroke-width="1" />
+
+                    <!-- Condensation droplets -->
+                    <circle cx="42" cy="52" r="1.2" fill="#38bdf8" opacity="0.7" />
+                    <circle cx="58" cy="62" r="1.5" fill="#38bdf8" opacity="0.7" />
+                    <path d="M42 53 Q42 56 41.5 58" fill="none" stroke="#38bdf8" stroke-width="0.8" opacity="0.5" stroke-linecap="round" />
+                    <circle cx="48" cy="70" r="1" fill="#38bdf8" opacity="0.7" />
+                    
+                    <!-- Cool sparkles -->
+                    <circle cx="20" cy="22" r="2.5" fill="#fff" class="shimmer-sparkle" />
+                    <circle cx="78" cy="32" r="1.5" fill="#38bdf8" class="shimmer-sparkle" />
+                    <polygon points="76,15 78,19 82,19 79,22 80,26 76,24 72,26 73,22 70,19 74,19" fill="#e0f2fe" class="shimmer-sparkle" />
+                  </svg>
+                </div>
+                <div class="slide-info">
+                  <span class="fav-badge badge-milk">🥛 ICE COLD</span>
+                  <h3 class="fav-title">Ice Cold Milk</h3>
+                  <p class="fav-quote">"Refreshing, delicious, and plain! (Just don't put it in my cereal!)" 🥛❄️😎</p>
+                </div>
+              </div>
+
             </div>
 
             <!-- Carousel Controls Overlay -->
@@ -558,6 +623,7 @@
             <span class="carousel-dot" data-slide="4"></span>
             <span class="carousel-dot" data-slide="5"></span>
             <span class="carousel-dot" data-slide="6"></span>
+            <span class="carousel-dot" data-slide="7"></span>
           </div>
         </section>
 

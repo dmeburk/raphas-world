@@ -598,6 +598,20 @@ treatButtons.forEach(btn => {
         petSvg.style.filter = '';
         petBodyGroup.classList.remove('pet-spin');
       }, 1000);
+    } else if (food === 'milk') {
+      playSynthSound('powerup');
+      // Milk white glow + happy spin + confetti sparkles!
+      petMouth.setAttribute('d', 'M 40 58 Q 50 70 60 58'); // Wide smile
+      petSvg.style.filter = 'drop-shadow(0 0 15px #ffffff) brightness(1.2)';
+      petBodyGroup.classList.add('pet-spin');
+      if (typeof triggerConfettiBlast === 'function') {
+        triggerConfettiBlast();
+      }
+      setTimeout(() => {
+        petMouth.setAttribute('d', 'M 44 58 Q 50 58 56 58');
+        petSvg.style.filter = '';
+        petBodyGroup.classList.remove('pet-spin');
+      }, 1000);
     }
   });
 });
