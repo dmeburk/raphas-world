@@ -120,7 +120,6 @@ body.theme-arcade::after {
   opacity: 0.45;
 }
 
-/* Background Particle Canvas */
 #global-particles {
   position: fixed;
   top: 0;
@@ -129,6 +128,25 @@ body.theme-arcade::after {
   height: 100vh;
   z-index: 0;
   pointer-events: none;
+}
+
+/* Full-page subtle watermark background photo of Rapha */
+.background-watermark {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('/rapha.png');
+  background-size: cover;
+  background-position: center 30%; /* Focus on his face */
+  background-repeat: no-repeat;
+  opacity: 0.08; /* Extremely subtle watermark so text is 100% readable */
+  z-index: 1;
+  pointer-events: none;
+  filter: grayscale(100%) contrast(1.15); /* Blends perfectly into all dynamic color themes */
+  mix-blend-mode: luminosity;
+  transition: opacity var(--transition-slow);
 }
 
 #app {
@@ -183,7 +201,16 @@ body.theme-arcade::after {
 .header-avatar {
   width: 100%;
   height: 100%;
+  border-radius: 50%;
+  border: 3px solid var(--color-primary);
+  object-fit: cover;
+  box-shadow: 0 0 15px var(--color-primary-glow);
   filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.2));
+  transition: transform var(--transition-medium);
+}
+
+.header-avatar:hover {
+  transform: scale(1.1) rotate(5deg);
 }
 
 .online-indicator {

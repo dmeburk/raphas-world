@@ -14,32 +14,15 @@
     <!-- Background Canvas for Particles, Cursor Trails, and Special Effects -->
     <canvas id="global-particles"></canvas>
 
+    <!-- Full-page subtle watermark background photo of Rapha -->
+    <div class="background-watermark"></div>
+
     <div id="app">
       <!-- Top Navigation & Profile Header -->
       <header class="header glass-panel">
         <div class="profile-container">
           <div class="avatar-wrapper">
-            <svg class="header-avatar" viewBox="0 0 100 100">
-              <defs>
-                <linearGradient id="avatarGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" stop-color="var(--color-primary)" />
-                  <stop offset="100%" stop-color="var(--color-secondary)" />
-                </linearGradient>
-              </defs>
-              <!-- Cute Space Helmet / Round face shape -->
-              <circle cx="50" cy="50" r="45" fill="url(#avatarGrad)" />
-              <circle cx="50" cy="46" r="35" fill="rgba(255, 255, 255, 0.15)" stroke="#fff" stroke-width="2" />
-              <!-- Face Details -->
-              <circle class="eye left" cx="40" cy="42" r="4" fill="#1e1b4b" />
-              <circle class="eye right" cx="60" cy="42" r="4" fill="#1e1b4b" />
-              <!-- Cheek blush -->
-              <circle cx="34" cy="48" r="3" fill="#f43f5e" opacity="0.6" />
-              <circle cx="66" cy="48" r="3" fill="#f43f5e" opacity="0.6" />
-              <!-- Happy Mouth -->
-              <path d="M 42 50 Q 50 58 58 50" fill="none" stroke="#1e1b4b" stroke-width="3" stroke-linecap="round" />
-              <!-- Shiny Helmet Glare -->
-              <path d="M 22 30 Q 30 18 50 18" fill="none" stroke="rgba(255, 255, 255, 0.6)" stroke-width="3" stroke-linecap="round" />
-            </svg>
+            <img class="header-avatar" src="/rapha.png" alt="Rapha" />
             <span class="online-indicator"></span>
           </div>
           <div class="title-wrapper">
