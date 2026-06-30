@@ -1247,6 +1247,7 @@ function checkCollision(r1, r2) {
 const heroModal = document.getElementById('hero-modal');
 const heroModalBtn = document.getElementById('hero-modal-btn');
 const closeHeroModalBtn = document.getElementById('close-hero-modal');
+const heroImg = document.getElementById('hero-img');
 
 if (heroModal && heroModalBtn && closeHeroModalBtn) {
   heroModalBtn.addEventListener('click', () => {
@@ -1268,6 +1269,24 @@ if (heroModal && heroModalBtn && closeHeroModalBtn) {
       heroModal.classList.remove('active');
     }
   });
+
+  // Flicker / Alternate Dad's photo every second for awesome dynamic action
+  if (heroImg) {
+    let isAlt = false;
+    setInterval(() => {
+      heroImg.classList.add('glitch-flicker');
+      
+      // Swap the source mid-flicker for smooth illusion
+      setTimeout(() => {
+        isAlt = !isAlt;
+        heroImg.src = isAlt ? '/drummer_dad_alt.png' : '/hero.png';
+      }, 70);
+
+      setTimeout(() => {
+        heroImg.classList.remove('glitch-flicker');
+      }, 160);
+    }, 1000);
+  }
 }
 
 // --- BOAT MODAL INTERACTION ENGINE ---
@@ -1482,24 +1501,6 @@ if (drummerDadModal && drummerDadModalBtn && closeDrummerDadModalBtn) {
       drummerDadModal.classList.remove('active');
     }
   });
-
-  // Flicker / Alternate Dad's photo every second for awesome dynamic action
-  if (drummerDadImg) {
-    let isAlt = false;
-    setInterval(() => {
-      drummerDadImg.classList.add('glitch-flicker');
-      
-      // Swap the source mid-flicker for smooth illusion
-      setTimeout(() => {
-        isAlt = !isAlt;
-        drummerDadImg.src = isAlt ? '/drummer_dad_alt.png' : '/drummer_dad.png';
-      }, 70);
-
-      setTimeout(() => {
-        drummerDadImg.classList.remove('glitch-flicker');
-      }, 160);
-    }, 1000);
-  }
 }
 
 // --- A LOTTA BURKS MODAL INTERACTION ENGINE ---
