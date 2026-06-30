@@ -141,31 +141,30 @@ body.theme-arcade::after {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-image: url('/rapha.png');
   background-size: cover;
-  background-position: center 30%; /* Focus on his face */
   background-repeat: no-repeat;
   z-index: 1;
   pointer-events: none;
-  transition: opacity var(--transition-slow), filter var(--transition-slow), mix-blend-mode var(--transition-slow);
+  opacity: 0; /* Invisible by default */
+  transition: opacity 2s ease-in-out, filter var(--transition-slow), mix-blend-mode var(--transition-slow);
 }
 
 /* Subtle Mode (Default Watermark) */
-body[data-bg="subtle"] .background-watermark {
+body[data-bg="subtle"] .background-watermark.active {
   opacity: 0.08;
   filter: grayscale(100%) contrast(1.1);
   mix-blend-mode: luminosity;
 }
 
 /* Prominent Mode (Vibrant Thematic Glow) */
-body[data-bg="vibrant"] .background-watermark {
+body[data-bg="vibrant"] .background-watermark.active {
   opacity: 0.28; /* Much more prominent watermark! */
   filter: grayscale(100%) contrast(1.2) brightness(0.95);
   mix-blend-mode: luminosity;
 }
 
 /* Poster Mode (Full Color Masterpiece) */
-body[data-bg="full"] .background-watermark {
+body[data-bg="full"] .background-watermark.active {
   opacity: 0.5; /* Incredibly prominent, fully visible portrait! */
   filter: grayscale(0%) contrast(1.05) brightness(0.85);
   mix-blend-mode: normal; /* Displays actual colors */

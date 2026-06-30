@@ -1958,10 +1958,80 @@ function initGuestbookWidget() {
   renderMessages();
 }
 
+// --- DYNAMIC BACKGROUND SLIDESHOW ---
+function initBackgroundSlideshow() {
+  const backgrounds = [
+    { url: '/rapha.png', position: 'center 30%' },
+    { url: '/bg_0.png', position: 'center center' },
+    { url: '/bg_1.png', position: 'center center' },
+    { url: '/bg_2.png', position: 'center center' },
+    { url: '/bg_3.png', position: 'center center' }
+  ];
+
+  const layer1 = document.getElementById('bg-watermark-1');
+  const layer2 = document.getElementById('bg-watermark-2');
+
+  if (!layer1 || !layer2) return;
+
+  let currentIndex = 0;
+  let activeLayer = 1; // 1 means layer1 is active, 2 means layer2 is active
+
+  // Set initial images
+  layer1.style.backgroundImage = `url('${backgrounds[0].url}')`;
+  layer1.style.backgroundPosition = backgrounds[0].position;
+  layer1.classList.add('active');
+
+  layer2.style.backgroundImage = `url('${backgrounds[1].url}')`;
+  layer2.style.backgroundPosition = backgrounds[1].position;
+  layer2.classList.remove('active');
+
+  // Change background function
+  function changeBackground() {
+    currentIndex = (currentIndex + 1) % backgrounds.length;
+    const nextBg = backgrounds[currentIndex];
+
+    if (activeLayer === 1) {
+      layer2.style.backgroundImage = `url('${nextBg.url}')`;
+      layer2.style.backgroundPosition = nextBg.position;
+      layer2.classList.add('active');
+      layer1.classList.remove('active');
+      activeLayer = 2;
+
+      // Preload next image into layer1 (which is now hidden)
+      const nextNextIndex = (currentIndex + 1) % backgrounds.length;
+      setTimeout(() => {
+        if (activeLayer === 2) {
+          layer1.style.backgroundImage = `url('${backgrounds[nextNextIndex].url}')`;
+          layer1.style.backgroundPosition = backgrounds[nextNextIndex].position;
+        }
+      }, 2500);
+    } else {
+      layer1.style.backgroundImage = `url('${nextBg.url}')`;
+      layer1.style.backgroundPosition = nextBg.position;
+      layer1.classList.add('active');
+      layer2.classList.remove('active');
+      activeLayer = 1;
+
+      // Preload next image into layer2 (which is now hidden)
+      const nextNextIndex = (currentIndex + 1) % backgrounds.length;
+      setTimeout(() => {
+        if (activeLayer === 1) {
+          layer2.style.backgroundImage = `url('${backgrounds[nextNextIndex].url}')`;
+          layer2.style.backgroundPosition = backgrounds[nextNextIndex].position;
+        }
+      }, 2500);
+    }
+  }
+
+  // Start the slideshow interval (change background every 15 seconds)
+  setInterval(changeBackground, 15000);
+}
+
 // Call on startup
 setTimeout(() => {
   initFavoriteThingsCarousel();
   initNoLikeyWidget();
   initGuestbookWidget();
+  initBackgroundSlideshow();
 }, 500);
 
