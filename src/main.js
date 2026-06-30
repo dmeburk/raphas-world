@@ -1236,3 +1236,29 @@ if (boatModal && boatModalBtn && closeBoatModalBtn) {
   });
 }
 
+// --- SISSY MODAL INTERACTION ENGINE ---
+const sissyModal = document.getElementById('sissy-modal');
+const sissyModalBtn = document.getElementById('sissy-modal-btn');
+const closeSissyModalBtn = document.getElementById('close-sissy-modal');
+
+if (sissyModal && sissyModalBtn && closeSissyModalBtn) {
+  sissyModalBtn.addEventListener('click', () => {
+    initAudio();
+    playSynthSound('powerup');
+    sissyModal.classList.add('active');
+    triggerConfettiBlast();
+  });
+
+  closeSissyModalBtn.addEventListener('click', () => {
+    playSynthSound('laser');
+    sissyModal.classList.remove('active');
+  });
+
+  sissyModal.addEventListener('click', (e) => {
+    if (e.target === sissyModal) {
+      playSynthSound('laser');
+      sissyModal.classList.remove('active');
+    }
+  });
+}
+
