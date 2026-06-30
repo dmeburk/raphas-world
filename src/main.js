@@ -1616,9 +1616,266 @@ function initNoLikeyWidget() {
   });
 }
 
+// --- SPACE MAIL GUEST BOOK SYSTEM ---
+function initGuestbookWidget() {
+  const form = document.getElementById('guestbook-form');
+  const nameInput = document.getElementById('gb-name');
+  const messageInput = document.getElementById('gb-message');
+  const charCount = document.getElementById('gb-char-count');
+  const glowToggle = document.getElementById('gb-glow-toggle');
+  const feedContainer = document.getElementById('guestbook-feed');
+  const feedCount = document.getElementById('gb-feed-count');
+  const avatarPicker = document.getElementById('gb-avatar-picker');
+  const submitBtn = document.getElementById('gb-submit-btn');
+
+  if (!form || !nameInput || !messageInput || !feedContainer || !avatarPicker || !submitBtn) return;
+
+  // Track state
+  let selectedAvatar = '🚀';
+  let customMessages = [];
+
+  // Load from localStorage
+  try {
+    const saved = localStorage.getItem('rapha_guestbook_v2');
+    if (saved) {
+      customMessages = JSON.parse(saved);
+    }
+  } catch (err) {
+    console.error('Error loading guestbook logs:', err);
+  }
+
+  // Verified Family Messages
+  const DEFAULT_FAMILY_MESSAGES = [
+    {
+      id: 'family-mom',
+      name: 'Mom 🇧🇷👸',
+      avatar: '💚',
+      badge: 'MOM 👑',
+      message: 'Rapha, you are my little champion! I love you so, so much! Que Deus te abençoe sempre, meu amor! 💚💛',
+      glow: true,
+      timestamp: 'STAR DATE 2026.06.29',
+      type: 'family-mom',
+      isCustom: false
+    },
+    {
+      id: 'family-dad',
+      name: 'Dad 🥁👨',
+      avatar: '🥁',
+      badge: 'DAD 🎸',
+      message: "Rapha, my buddy! You are the absolute rhythm master of the universe! Keep rocking those stars, son! Let's do a drum solo together soon! ⚡🎸🥁",
+      glow: true,
+      timestamp: 'STAR DATE 2026.06.29',
+      type: 'family-dad',
+      isCustom: false
+    },
+    {
+      id: 'family-sissy',
+      name: 'Big Sis Lydia 👧💖',
+      avatar: '👧',
+      badge: 'SISSY 👾',
+      message: "Rafa-pasta! Stop stealing my controllers but also you are the best partner-in-crime ever! Let's play Roblox later! 🎮🕹️😜",
+      glow: false,
+      timestamp: 'STAR DATE 2026.06.29',
+      type: 'family-sissy',
+      isCustom: false
+    },
+    {
+      id: 'family-brah',
+      name: 'My Brah 🤙⚡',
+      avatar: '🤙',
+      badge: 'BRAH 🤙',
+      message: "Yo, Rapha! Looking ultra-cool in the mega-chair as always. Keep being the absolute coolest master of Minecraft! High five! 🤙🔥🎮",
+      glow: false,
+      timestamp: 'STAR DATE 2026.06.29',
+      type: 'family-brah',
+      isCustom: false
+    }
+  ];
+
+  // Helper for safe HTML rendering
+  function escapeHTML(str) {
+    return str.replace(/[&<>'"]/g, 
+      tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
+    );
+  }
+
+  // Get Star Date helper
+  function getStarDate() {
+    const d = new Date();
+    const yy = d.getFullYear();
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const dd = String(d.getDate()).padStart(2, '0');
+    return `${yy}.${mm}.${dd}`;
+  }
+
+  // Handle avatar picker clicks
+  const avatarButtons = avatarPicker.querySelectorAll('.avatar-picker-btn');
+  avatarButtons.forEach(btn => {
+    btn.addEventListener('click', () => {
+      initAudio();
+      playSynthSound('jump');
+
+      // Clear selection
+      avatarButtons.forEach(b => b.classList.remove('selected'));
+      // Add selection
+      btn.classList.add('selected');
+      selectedAvatar = btn.getAttribute('data-emoji') || '🚀';
+    });
+  });
+
+  // Handle character count
+  messageInput.addEventListener('input', () => {
+    const len = messageInput.value.length;
+    charCount.textContent = len;
+    if (len >= 135) {
+      charCount.style.color = '#f59e0b'; // Warn yellow
+    } else if (len >= 150) {
+      charCount.style.color = '#ef4444'; // Danger red
+    } else {
+      charCount.style.color = 'var(--color-text-muted)';
+    }
+  });
+
+  // Render function
+  function renderMessages() {
+    feedContainer.innerHTML = '';
+
+    // Merge default and custom messages (custom newest first)
+    const allMessages = [...DEFAULT_FAMILY_MESSAGES, ...customMessages];
+    
+    // Update counter
+    if (feedCount) {
+      feedCount.textContent = `${allMessages.length} message${allMessages.length !== 1 ? 's' : ''}`;
+    }
+
+    allMessages.forEach(msg => {
+      const msgEl = document.createElement('div');
+      msgEl.className = `guestbook-msg ${msg.type || ''} ${msg.glow ? 'msg-glow' : ''}`;
+      
+      const deleteButtonHtml = msg.isCustom 
+        ? `<button class="msg-delete-btn" data-id="${msg.id}" title="Delete Space Log">🗑️</button>` 
+        : '';
+
+      msgEl.innerHTML = `
+        <div class="msg-avatar">${msg.avatar}</div>
+        <div class="msg-content">
+          <div class="msg-header">
+            <div class="msg-name-wrapper">
+              <span class="msg-name">${escapeHTML(msg.name)}</span>
+              ${msg.badge ? `<span class="msg-badge">${msg.badge}</span>` : ''}
+            </div>
+            <div class="msg-meta">
+              <span class="msg-date">${msg.timestamp}</span>
+              ${deleteButtonHtml}
+            </div>
+          </div>
+          <div class="msg-body ${msg.glow ? 'glow-text' : ''}">${escapeHTML(msg.message)}</div>
+        </div>
+      `;
+
+      feedContainer.appendChild(msgEl);
+    });
+
+    // Bind delete buttons
+    const deleteBtns = feedContainer.querySelectorAll('.msg-delete-btn');
+    deleteBtns.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const idToDelete = btn.getAttribute('data-id');
+        if (!idToDelete) return;
+
+        initAudio();
+        playSynthSound('explosion');
+
+        // Filter and save
+        customMessages = customMessages.filter(m => m.id !== idToDelete);
+        try {
+          localStorage.setItem('rapha_guestbook_v2', JSON.stringify(customMessages));
+        } catch (err) {
+          console.error('Error saving guestbook custom logs:', err);
+        }
+
+        renderMessages();
+      });
+    });
+  }
+
+  // Handle form submission
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const nameVal = nameInput.value.trim();
+    const msgVal = messageInput.value.trim();
+    if (!nameVal || !msgVal) return;
+
+    initAudio();
+    playSynthSound('powerup');
+
+    // Create message
+    const newMsg = {
+      id: 'msg-' + Date.now() + '-' + Math.random().toString(36).substr(2, 4),
+      name: nameVal,
+      avatar: selectedAvatar,
+      badge: 'VISITOR 🛸',
+      message: msgVal,
+      glow: glowToggle.checked,
+      timestamp: 'STAR DATE ' + getStarDate(),
+      isCustom: true
+    };
+
+    // Add to custom messages (newest first)
+    customMessages.unshift(newMsg);
+
+    // Save
+    try {
+      localStorage.setItem('rapha_guestbook_v2', JSON.stringify(customMessages));
+    } catch (err) {
+      console.error('Error saving custom logs:', err);
+    }
+
+    // Trigger button particle explosion
+    const btnRect = submitBtn.getBoundingClientRect();
+    const blastX = btnRect.left + btnRect.width / 2;
+    const blastY = btnRect.top + btnRect.height / 2;
+
+    for (let i = 0; i < 35; i++) {
+      if (typeof Particle === 'function') {
+        particlesList.push(new Particle(blastX, blastY, true));
+      }
+    }
+
+    // Reset form
+    form.reset();
+    selectedAvatar = '🚀';
+    avatarButtons.forEach(b => {
+      b.classList.remove('selected');
+      if (b.getAttribute('data-emoji') === '🚀') {
+        b.classList.add('selected');
+      }
+    });
+    charCount.textContent = '0';
+    charCount.style.color = 'var(--color-text-muted)';
+
+    // Render & Scroll Feed to the top so they see it
+    renderMessages();
+    
+    // Smoothly scroll to top of feed
+    setTimeout(() => {
+      feedContainer.scrollTo({
+        top: 0,
+        behavior: 'smooth'
+      });
+    }, 50);
+  });
+
+  // Initial Render
+  renderMessages();
+}
+
 // Call on startup
 setTimeout(() => {
   initFavoriteThingsCarousel();
   initNoLikeyWidget();
+  initGuestbookWidget();
 }, 500);
 

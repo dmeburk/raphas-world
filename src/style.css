@@ -441,6 +441,7 @@ body[data-bg="full"] .glass-panel {
 .nolikey-card { grid-column: span 4; }
 .draw-card { grid-column: span 4; }
 .sound-card { grid-column: span 4; }
+.guestbook-card { grid-column: span 12; }
 .joke-card { grid-column: span 12; }
 .game-card { grid-column: span 12; }
 
@@ -451,6 +452,7 @@ body[data-bg="full"] .glass-panel {
   .nolikey-card { grid-column: span 12; }
   .draw-card { grid-column: span 6; }
   .sound-card { grid-column: span 6; }
+  .guestbook-card { grid-column: span 12; }
   .joke-card { grid-column: span 12; height: 350px; }
   .game-card { grid-column: span 12; }
 }
@@ -1761,3 +1763,377 @@ body[data-bg="full"] .glass-panel {
   0% { transform: translate(-1px, 1px) rotate(-0.5deg); }
   100% { transform: translate(1px, -1px) rotate(0.5deg); }
 }
+
+/* --- SPACE MAIL GUEST BOOK PREMIUM STYLES --- */
+.guestbook-container {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr;
+  gap: 28px;
+  margin-top: 8px;
+  align-items: start;
+}
+
+@media (max-width: 850px) {
+  .guestbook-container {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+}
+
+.guestbook-form-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.guestbook-label {
+  font-family: var(--font-accent);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--color-text);
+  margin-bottom: 6px;
+  letter-spacing: 0.2px;
+}
+
+.guestbook-input, .guestbook-textarea {
+  width: 100%;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  background: rgba(15, 23, 42, 0.45);
+  color: #fff;
+  padding: 12px 14px;
+  font-family: var(--font-primary);
+  font-size: 0.95rem;
+  transition: all var(--transition-normal);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.guestbook-input:focus, .guestbook-textarea:focus {
+  outline: none;
+  border-color: var(--color-secondary);
+  box-shadow: 0 0 12px var(--color-glow), inset 0 2px 4px rgba(0, 0, 0, 0.2);
+  background: rgba(15, 23, 42, 0.7);
+}
+
+.guestbook-textarea {
+  resize: none;
+}
+
+/* Avatar Picker Grid */
+.avatar-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-top: 4px;
+}
+
+@media (max-width: 480px) {
+  .avatar-picker-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.avatar-picker-btn {
+  height: 48px;
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.45rem;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  transition: all var(--transition-fast);
+  cursor: pointer;
+}
+
+.avatar-picker-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--color-primary);
+  transform: scale(1.08) translateY(-1px);
+}
+
+.avatar-picker-btn.selected {
+  background: linear-gradient(135deg, var(--color-primary-dark), var(--color-primary));
+  border-color: var(--color-secondary);
+  box-shadow: 0 0 15px var(--color-glow);
+  transform: scale(1.1);
+  color: #fff;
+}
+
+/* Glow Custom Checkbox */
+.glow-toggle-wrapper {
+  display: flex;
+  align-items: center;
+  margin-top: 12px;
+}
+
+.glow-checkbox-label .custom-checkbox {
+  width: 22px;
+  height: 22px;
+  border: 1px solid var(--color-border);
+  background: rgba(15, 23, 42, 0.45);
+  border-radius: 6px;
+  display: inline-block;
+  position: relative;
+  transition: all var(--transition-fast);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.glow-checkbox-label:hover .custom-checkbox {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 8px var(--color-glow);
+}
+
+#gb-glow-toggle:checked + .glow-checkbox-label .custom-checkbox {
+  background: linear-gradient(135deg, var(--color-secondary), var(--color-primary));
+  border-color: var(--color-secondary);
+  box-shadow: 0 0 12px var(--color-glow);
+}
+
+#gb-glow-toggle:checked + .glow-checkbox-label .custom-checkbox::after {
+  content: '✓';
+  color: #fff;
+  font-weight: 800;
+  font-size: 0.9rem;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.guestbook-submit-btn {
+  font-weight: 700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+/* Feed Side Panel */
+.guestbook-feed-panel {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.guestbook-feed {
+  max-height: 420px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding-right: 6px;
+  scrollbar-width: thin;
+}
+
+/* Customized Glowing Scrollbars */
+.guestbook-feed::-webkit-scrollbar {
+  width: 6px;
+}
+
+.guestbook-feed::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.01);
+  border-radius: 10px;
+}
+
+.guestbook-feed::-webkit-scrollbar-thumb {
+  background: var(--color-primary);
+  border-radius: 10px;
+  box-shadow: 0 0 8px var(--color-glow);
+}
+
+/* Message Item styling */
+.guestbook-msg {
+  display: flex;
+  gap: 14px;
+  padding: 16px;
+  border-radius: var(--radius-md);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  transition: all var(--transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.guestbook-msg:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+.msg-avatar {
+  font-size: 1.8rem;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  flex-shrink: 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.msg-content {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex-grow: 1;
+}
+
+.msg-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.msg-name-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.msg-name {
+  font-weight: 700;
+  font-size: 0.98rem;
+  color: #fff;
+  font-family: var(--font-accent);
+}
+
+.msg-badge {
+  font-size: 0.65rem;
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--color-primary);
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.msg-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.msg-date {
+  font-size: 0.72rem;
+  color: var(--color-text-muted);
+  font-family: monospace;
+}
+
+.msg-body {
+  font-size: 0.92rem;
+  color: #e2e8f0;
+  line-height: 1.45;
+  word-break: break-word;
+}
+
+/* Custom styles for Verified Family logs */
+.guestbook-msg.family-mom {
+  border-left: 4px solid #22c55e;
+  border-right: 4px solid #eab308;
+  background: rgba(34, 197, 94, 0.05);
+}
+.guestbook-msg.family-mom:hover {
+  background: rgba(34, 197, 94, 0.08);
+}
+.guestbook-msg.family-mom .msg-badge {
+  background: linear-gradient(90deg, #22c55e, #eab308);
+  color: #fff;
+}
+
+.guestbook-msg.family-dad {
+  border-left: 4px solid #ec4899;
+  border-right: 4px solid #06b6d4;
+  background: rgba(236, 72, 153, 0.05);
+}
+.guestbook-msg.family-dad:hover {
+  background: rgba(236, 72, 153, 0.08);
+}
+.guestbook-msg.family-dad .msg-badge {
+  background: linear-gradient(90deg, #ec4899, #06b6d4);
+  color: #fff;
+}
+
+.guestbook-msg.family-sissy {
+  border-left: 4px solid #f472b6;
+  border-right: 4px solid #a855f7;
+  background: rgba(244, 114, 182, 0.05);
+}
+.guestbook-msg.family-sissy:hover {
+  background: rgba(244, 114, 182, 0.08);
+}
+.guestbook-msg.family-sissy .msg-badge {
+  background: linear-gradient(90deg, #f472b6, #a855f7);
+  color: #fff;
+}
+
+.guestbook-msg.family-brah {
+  border-left: 4px solid #06b6d4;
+  border-right: 4px solid #f97316;
+  background: rgba(6, 182, 212, 0.05);
+}
+.guestbook-msg.family-brah:hover {
+  background: rgba(6, 182, 212, 0.08);
+}
+.guestbook-msg.family-brah .msg-badge {
+  background: linear-gradient(90deg, #06b6d4, #f97316);
+  color: #fff;
+}
+
+/* Pulsing neon message glow */
+.guestbook-msg.msg-glow {
+  animation: guestbookMsgGlow 2.5s infinite alternate;
+  border-color: var(--color-secondary);
+}
+
+@keyframes guestbookMsgGlow {
+  0% {
+    box-shadow: 0 0 4px rgba(255, 255, 255, 0.05), inset 0 0 4px rgba(255, 255, 255, 0.02);
+  }
+  100% {
+    box-shadow: 0 0 16px var(--color-glow), inset 0 0 6px rgba(255, 255, 255, 0.04);
+    border-color: var(--color-primary);
+  }
+}
+
+.msg-body.glow-text {
+  text-shadow: 0 0 6px #fff, 0 0 12px var(--color-primary), 0 0 18px var(--color-secondary);
+  color: #ffffff;
+  font-weight: 500;
+}
+
+/* Delete message button */
+.msg-delete-btn {
+  background: none;
+  border: none;
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  cursor: pointer;
+  opacity: 0;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+}
+
+.guestbook-msg:hover .msg-delete-btn {
+  opacity: 0.65;
+}
+
+.msg-delete-btn:hover {
+  opacity: 1 !important;
+  color: #ef4444;
+  background: rgba(239, 68, 68, 0.15);
+  transform: scale(1.1);
+}
+

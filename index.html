@@ -728,6 +728,72 @@
           </div>
         </section>
 
+        <!-- Card: Space Mail Guest Book -->
+        <section class="card guestbook-card glass-panel animate-reveal">
+          <div class="card-header">
+            <span class="card-icon">📬</span>
+            <h2>Space Mail Guest Book</h2>
+          </div>
+          <p class="card-desc">Leave a lovely message for Rapha's adventure log! Choose an avatar and toggle glow!</p>
+          
+          <div class="guestbook-container">
+            <!-- Form Side -->
+            <div class="guestbook-form-panel">
+              <form id="guestbook-form" autocomplete="off">
+                <div class="form-group">
+                  <label for="gb-name" class="guestbook-label">Hero Name:</label>
+                  <input type="text" id="gb-name" class="guestbook-input" placeholder="e.g. Grandma, Uncle Dave, Bob..." maxlength="20" required />
+                </div>
+                
+                <div class="form-group" style="margin-top: 15px;">
+                  <label class="guestbook-label">Choose Avatar Emoji:</label>
+                  <div class="avatar-picker-grid" id="gb-avatar-picker">
+                    <button type="button" class="avatar-picker-btn selected" data-emoji="🚀">🚀</button>
+                    <button type="button" class="avatar-picker-btn" data-emoji="🦖">🦖</button>
+                    <button type="button" class="avatar-picker-btn" data-emoji="🕹️">🕹️</button>
+                    <button type="button" class="avatar-picker-btn" data-emoji="👑">👑</button>
+                    <button type="button" class="avatar-picker-btn" data-emoji="🦄">🦄</button>
+                    <button type="button" class="avatar-picker-btn" data-emoji="👽">👽</button>
+                    <button type="button" class="avatar-picker-btn" data-emoji="👾">👾</button>
+                    <button type="button" class="avatar-picker-btn" data-emoji="🤠">🤠</button>
+                  </div>
+                </div>
+
+                <div class="form-group" style="margin-top: 15px;">
+                  <label for="gb-message" class="guestbook-label">Your Message:</label>
+                  <textarea id="gb-message" class="guestbook-textarea" placeholder="Write a nice note or funny joke for Rapha..." rows="3" maxlength="150" required></textarea>
+                  <div class="char-counter" style="text-align: right; font-size: 0.75rem; color: var(--color-text-muted); margin-top: 4px;">
+                    <span id="gb-char-count">0</span> / 150
+                  </div>
+                </div>
+
+                <div class="form-group glow-toggle-wrapper" style="margin-top: 15px;">
+                  <input type="checkbox" id="gb-glow-toggle" style="display: none;" />
+                  <label for="gb-glow-toggle" class="glow-checkbox-label" style="display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none;">
+                    <span class="custom-checkbox"></span>
+                    <span class="guestbook-label" style="margin-bottom: 0;">Make my message GLOW! ✨</span>
+                  </label>
+                </div>
+
+                <button type="submit" id="gb-submit-btn" class="action-btn guestbook-submit-btn" style="margin-top: 20px; width: 100%;">
+                  🚀 Launch Message!
+                </button>
+              </form>
+            </div>
+
+            <!-- Feed Side -->
+            <div class="guestbook-feed-panel">
+              <div class="guestbook-feed-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                <span class="feed-title" style="font-family: var(--font-accent); font-weight: 700; font-size: 1.1rem; color: #fff;">Inbox Logs</span>
+                <span class="feed-count" id="gb-feed-count" style="font-size: 0.8rem; background: rgba(255,255,255,0.08); padding: 2px 8px; border-radius: 20px; color: var(--color-text-muted);">4 messages</span>
+              </div>
+              <div class="guestbook-feed" id="guestbook-feed">
+                <!-- Messages dynamically rendered -->
+              </div>
+            </div>
+          </div>
+        </section>
+
         <!-- Card 6: Joke-O-Matic -->
         <section class="card joke-card glass-panel animate-reveal">
           <div class="card-header">
