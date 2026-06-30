@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Rapha's World 🚀</title>
+    <!-- Premium Playful Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
+  </head>
+  <body class="theme-space">
+    <!-- Background Canvas for Particles, Cursor Trails, and Special Effects -->
+    <canvas id="global-particles"></canvas>
+
+    <div id="app">
+      <!-- Top Navigation & Profile Header -->
+      <header class="header glass-panel">
+        <div class="profile-container">
+          <div class="avatar-wrapper">
+            <svg class="header-avatar" viewBox="0 0 100 100">
+              <defs>
+                <linearGradient id="avatarGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stop-color="var(--color-primary)" />
+                  <stop offset="100%" stop-color="var(--color-secondary)" />
+                </linearGradient>
+              </defs>
+              <!-- Cute Space Helmet / Round face shape -->
+              <circle cx="50" cy="50" r="45" fill="url(#avatarGrad)" />
+              <circle cx="50" cy="46" r="35" fill="rgba(255, 255, 255, 0.15)" stroke="#fff" stroke-width="2" />
+              <!-- Face Details -->
+              <circle class="eye left" cx="40" cy="42" r="4" fill="#1e1b4b" />
+              <circle class="eye right" cx="60" cy="42" r="4" fill="#1e1b4b" />
+              <!-- Cheek blush -->
+              <circle cx="34" cy="48" r="3" fill="#f43f5e" opacity="0.6" />
+              <circle cx="66" cy="48" r="3" fill="#f43f5e" opacity="0.6" />
+              <!-- Happy Mouth -->
+              <path d="M 42 50 Q 50 58 58 50" fill="none" stroke="#1e1b4b" stroke-width="3" stroke-linecap="round" />
+              <!-- Shiny Helmet Glare -->
+              <path d="M 22 30 Q 30 18 50 18" fill="none" stroke="rgba(255, 255, 255, 0.6)" stroke-width="3" stroke-linecap="round" />
+            </svg>
+            <span class="online-indicator"></span>
+          </div>
+          <div class="title-wrapper">
+            <h1 class="logo-text">RAPHA'S <span class="accent-text">WORLD</span></h1>
+            <div class="subtitle-row">
+              <p class="subtitle">Level 7 Adventure Zone</p>
+              <button id="hero-modal-btn" class="hero-link-btn" title="Meet Rapha's Greatest Hero!">🦸 My Greatest Hero</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Interactive Theme Switcher Dashboard -->
+        <div class="theme-dashboard">
+          <span class="control-label">CHOOSE ADVENTURE:</span>
+          <div class="theme-buttons">
+            <button class="theme-btn active" data-theme="space" aria-label="Space Theme">
+              <span class="icon">🚀</span> Space
+            </button>
+            <button class="theme-btn" data-theme="dino" aria-label="Dino Theme">
+              <span class="icon">🦖</span> Dino
+            </button>
+            <button class="theme-btn" data-theme="arcade" aria-label="Arcade Theme">
+              <span class="icon">🕹️</span> Arcade
+            </button>
+            <button class="theme-btn" data-theme="magic" aria-label="Magic Theme">
+              <span class="icon">✨</span> Magic
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <!-- Main Dashboard Grid -->
+      <main class="dashboard-grid">
+
+        <!-- Card 1: Rapha's Character Sheet (About Me) -->
+        <section class="card stats-card glass-panel animate-reveal">
+          <div class="card-header">
+            <span class="card-icon">👑</span>
+            <h2>Hero Stats</h2>
+          </div>
+          <div class="stats-container">
+            <div class="stat-row">
+              <span class="stat-label">Name</span>
+              <span class="stat-value text-glow">Rapha</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Age</span>
+              <span class="stat-value text-glow">7 Years Old</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Class</span>
+              <span class="stat-value text-glow theme-text-space">Lego Arch-Builder</span>
+            </div>
+            <div class="stat-row">
+              <span class="stat-label">Power Level</span>
+              <span class="stat-value text-glow" id="power-level">9000</span>
+            </div>
+            
+            <div class="skills-showcase">
+              <h3>Superpowers</h3>
+              <div class="badges-grid">
+                <span class="badge" title="Master of Lego Blocks">🧱 Lego Legend</span>
+                <span class="badge" title="Expert Pizza Consumer">🍕 Pizza Power</span>
+                <span class="badge" title="Sonic Speed Sprinter">🏃 Runner</span>
+                <span class="badge" title="Creative Drawing Master">🎨 Epic Artist</span>
+              </div>
+            </div>
+
+            <button id="level-up-btn" class="action-btn">
+              ⚡ LEVEL UP! ⚡
+            </button>
+          </div>
+        </section>
+
+        <!-- Card 2: Astro-Pet (Interactive Virtual Creature) -->
+        <section class="card pet-card glass-panel animate-reveal">
+          <div class="card-header">
+            <span class="card-icon">👾</span>
+            <h2>Astro-Buddy</h2>
+          </div>
+          <p class="card-desc">Click or hover to play, and feed him treats!</p>
+          <div class="pet-area">
+            <div class="pet-container">
+              <!-- Animated SVG Pet -->
+              <svg id="virtual-pet" viewBox="0 0 100 100">
+                <defs>
+                  <radialGradient id="petGrad" cx="40%" cy="40%" r="60%">
+                    <stop offset="0%" stop-color="var(--color-primary)" />
+                    <stop offset="70%" stop-color="var(--color-secondary)" />
+                    <stop offset="100%" stop-color="var(--color-primary-dark)" />
+                  </radialGradient>
+                  <filter id="petGlow">
+                    <feGaussianBlur stdDeviation="3" result="blur" />
+                    <feComposite in="SourceGraphic" in2="blur" operator="over" />
+                  </filter>
+                </defs>
+                
+                <!-- Floating Shadow -->
+                <ellipse cx="50" cy="88" rx="25" ry="5" fill="rgba(0,0,0,0.3)" id="pet-shadow" />
+
+                <!-- Pet Body Group (will be animated in CSS/JS) -->
+                <g id="pet-body-group">
+                  <!-- Main Body (Squishy Blob/Monster) -->
+                  <path id="pet-body" d="M 50 15 C 75 15, 85 45, 80 75 C 75 85, 25 85, 20 75 C 15 45, 25 15, 50 15" fill="url(#petGrad)" filter="url(#petGlow)" />
+                  
+                  <!-- Playful Horns/Antennae -->
+                  <path d="M 35 22 Q 25 10 20 15 Q 26 25 32 26" fill="var(--color-primary)" />
+                  <path d="M 65 22 Q 75 10 80 15 Q 74 25 68 26" fill="var(--color-primary)" />
+                  
+                  <!-- Blinking Eyes (follow cursor partially via JS) -->
+                  <g id="pet-eyes">
+                    <!-- Left Eye -->
+                    <circle cx="38" cy="45" r="9" fill="#fff" />
+                    <circle id="pupil-l" cx="38" cy="45" r="4.5" fill="#1e1b4b" />
+                    <circle cx="36" cy="42" r="2.5" fill="#fff" /> <!-- eye highlight -->
+
+                    <!-- Right Eye -->
+                    <circle cx="62" cy="45" r="9" fill="#fff" />
+                    <circle id="pupil-r" cx="62" cy="45" r="4.5" fill="#1e1b4b" />
+                    <circle cx="60" cy="42" r="2.5" fill="#fff" /> <!-- eye highlight -->
+                  </g>
+
+                  <!-- Cheeks Blush -->
+                  <ellipse cx="28" cy="53" rx="4" ry="2" fill="#ff4d80" opacity="0.6" />
+                  <ellipse cx="72" cy="53" rx="4" ry="2" fill="#ff4d80" opacity="0.6" />
+
+                  <!-- Mouth (interactive) -->
+                  <path id="pet-mouth" d="M 44 58 Q 50 58 56 58" fill="none" stroke="#1e1b4b" stroke-width="3" stroke-linecap="round" />
+                </g>
+              </svg>
+            </div>
+          </div>
+          <!-- Feeding station controls -->
+          <div class="feeding-controls">
+            <button class="treat-btn" data-food="pizza" title="Feed Pizza">🍕 Pizza</button>
+            <button class="treat-btn" data-food="cookie" title="Feed Cookie">🍪 Cookie</button>
+            <button class="treat-btn" data-food="broccoli" title="Feed Broccoli (Danger!)">🥦 Broccoli</button>
+          </div>
+        </section>
+
+        <!-- Card 3: Neon Pixel Sketchpad -->
+        <section class="card draw-card glass-panel animate-reveal">
+          <div class="card-header">
+            <span class="card-icon">🎨</span>
+            <h2>Magic Art Pad</h2>
+          </div>
+          <div class="sketchpad-container">
+            <div class="canvas-controls">
+              <div class="color-options">
+                <button class="color-dot active" data-color="rainbow" title="Rainbow Glow" style="background: linear-gradient(45deg, red, orange, yellow, green, blue, violet);"></button>
+                <button class="color-dot" data-color="#ff007f" title="Neon Pink" style="background-color: #ff007f;"></button>
+                <button class="color-dot" data-color="#00f3ff" title="Neon Cyan" style="background-color: #00f3ff;"></button>
+                <button class="color-dot" data-color="#39ff14" title="Neon Green" style="background-color: #39ff14;"></button>
+                <button class="color-dot" data-color="#ffaa00" title="Neon Gold" style="background-color: #ffaa00;"></button>
+              </div>
+              <div class="tool-options">
+                <button class="tool-btn active" id="tool-brush" title="Neon Brush">🖌️ Glow</button>
+                <button class="tool-btn" id="tool-spray" title="Spray Paint">💨 Spray</button>
+                <button class="tool-btn" id="tool-eraser" title="Eraser">🧼 Eraser</button>
+              </div>
+            </div>
+            
+            <div class="canvas-wrapper">
+              <canvas id="sketchpad"></canvas>
+            </div>
+
+            <div class="sketchpad-footer">
+              <div class="brush-size-container">
+                <label for="brush-size">Size:</label>
+                <input type="range" id="brush-size" min="4" max="32" value="12">
+              </div>
+              <button id="clear-sketchpad" class="danger-btn">🗑️ Clear Screen</button>
+            </div>
+          </div>
+        </section>
+
+        <!-- Card 4: Retro Synth Soundboard -->
+        <section class="card sound-card glass-panel animate-reveal">
+          <div class="card-header">
+            <span class="card-icon">🔊</span>
+            <h2>Soundboard</h2>
+          </div>
+          <p class="card-desc">Click buttons (or press 1-9 on keyboard) to synthesize amazing 8-bit sounds!</p>
+          <div class="soundboard-grid">
+            <button class="sound-pad" data-sound="laser" data-key="1">
+              <span class="pad-emoji">⚡</span>
+              <span class="pad-name">Space Laser</span>
+              <span class="pad-key">1</span>
+            </button>
+            <button class="sound-pad" data-sound="jump" data-key="2">
+              <span class="pad-emoji">🦘</span>
+              <span class="pad-name">Retro Jump</span>
+              <span class="pad-key">2</span>
+            </button>
+            <button class="sound-pad" data-sound="powerup" data-key="3">
+              <span class="pad-emoji">⭐</span>
+              <span class="pad-name">Power Up</span>
+              <span class="pad-key">3</span>
+            </button>
+            <button class="sound-pad" data-sound="coin" data-key="4">
+              <span class="pad-emoji">🪙</span>
+              <span class="pad-name">Arcade Coin</span>
+              <span class="pad-key">4</span>
+            </button>
+            <button class="sound-pad" data-sound="explosion" data-key="5">
+              <span class="pad-emoji">💥</span>
+              <span class="pad-name">Mega Boom</span>
+              <span class="pad-key">5</span>
+            </button>
+            <button class="sound-pad" data-sound="teleport" data-key="6">
+              <span class="pad-emoji">🌀</span>
+              <span class="pad-name">Warp Drive</span>
+              <span class="pad-key">6</span>
+            </button>
+            <button class="sound-pad" data-sound="melody1" data-key="7">
+              <span class="pad-emoji">🎵</span>
+              <span class="pad-name">Astro Note C</span>
+              <span class="pad-key">7</span>
+            </button>
+            <button class="sound-pad" data-sound="melody2" data-key="8">
+              <span class="pad-emoji">🎶</span>
+              <span class="pad-name">Astro Note E</span>
+              <span class="pad-key">8</span>
+            </button>
+            <button class="sound-pad" data-sound="melody3" data-key="9">
+              <span class="pad-emoji">🌈</span>
+              <span class="pad-name">Astro Note G</span>
+              <span class="pad-key">9</span>
+            </button>
+          </div>
+          <!-- Dynamic Visualizer Bar -->
+          <div class="visualizer-container">
+            <div class="vis-bar"></div>
+            <div class="vis-bar"></div>
+            <div class="vis-bar"></div>
+            <div class="vis-bar"></div>
+            <div class="vis-bar"></div>
+            <div class="vis-bar"></div>
+            <div class="vis-bar"></div>
+            <div class="vis-bar"></div>
+            <div class="vis-bar"></div>
+            <div class="vis-bar"></div>
+          </div>
+        </section>
+
+        <!-- Card 5: Rapha's Astro-Chomp Game -->
+        <section class="card game-card glass-panel animate-reveal">
+          <div class="card-header">
+            <span class="card-icon">🎮</span>
+            <h2>Astro-Chomp Arcade</h2>
+          </div>
+          <div class="game-container">
+            <div class="game-hud">
+              <div class="hud-score">SCORE: <span id="game-score">0</span></div>
+              <div class="hud-high">HI: <span id="game-high">0</span></div>
+            </div>
+            
+            <div class="game-screen-wrapper">
+              <canvas id="game-canvas"></canvas>
+              <!-- Game Over / Start Screen overlays -->
+              <div id="game-overlay" class="game-overlay active">
+                <div class="overlay-content">
+                  <h3 id="overlay-title">ASTRO-CHOMP</h3>
+                  <p id="overlay-desc">Catch the falling stars and pizzas, avoid the floating space rocks!</p>
+                  <div class="control-hints">
+                    <span>📱 Swipe / Tap left or right</span>
+                    <span>💻 Use Arrow Keys or Mouse</span>
+                  </div>
+                  <button id="start-game-btn" class="action-btn">START PLAYING</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Card 6: Joke-O-Matic -->
+        <section class="card joke-card glass-panel animate-reveal">
+          <div class="card-header">
+            <span class="card-icon">🤪</span>
+            <h2>Rapha's Joke-O-Matic</h2>
+          </div>
+          <div class="joke-container">
+            <div class="joke-flipper" id="joke-card">
+              <div class="joke-front">
+                <p id="joke-setup">Why did the computer go to the doctor?</p>
+                <span class="tap-hint">Tap to see answer! 🤫</span>
+              </div>
+              <div class="joke-back">
+                <p id="joke-punchline">Because it had a virus!</p>
+                <span class="tap-hint">Tap for next joke! 🔄</span>
+              </div>
+            </div>
+            <button id="next-joke-btn" class="secondary-btn">Gimme Another! 😂</button>
+          </div>
+        </section>
+
+      </main>
+
+      <!-- Footer Info -->
+      <footer class="footer">
+        <p>Built with 💖 for Rapha • Registered with Porkbun</p>
+        <p class="small-text">No trackers, no ads, just 100% adventure.</p>
+      </footer>
+    </div>
+
+    <!-- Fullscreen Hero Overlay Modal -->
+    <div id="hero-modal" class="hero-modal-overlay">
+      <div class="hero-modal-content glass-panel">
+        <button id="close-hero-modal" class="close-modal-btn" aria-label="Close Modal">&times;</button>
+        <div class="hero-modal-grid">
+          <div class="hero-image-container">
+            <img src="/hero.png" alt="My Greatest Hero" class="hero-photo" />
+            <div class="hero-badge-overlay">🦸 SUPER-DAD</div>
+          </div>
+          <div class="hero-info-wrapper">
+            <h2 class="hero-title text-glow">MY GREATEST HERO</h2>
+            <p class="hero-subtitle">Code Name: Dad</p>
+            
+            <div class="hero-stats-list">
+              <div class="hero-stat-item">
+                <span class="stat-emoji">❤️</span>
+                <div class="stat-details">
+                  <strong>Superpower:</strong> Infinite Love &amp; Support
+                </div>
+              </div>
+              <div class="hero-stat-item">
+                <span class="stat-emoji">🧱</span>
+                <div class="stat-details">
+                  <strong>Co-Pilot:</strong> Expert Lego Architect &amp; play partner
+                </div>
+              </div>
+              <div class="hero-stat-item">
+                <span class="stat-emoji">🍕</span>
+                <div class="stat-details">
+                  <strong>Special Skill:</strong> Pizza Sharing Champion
+                </div>
+              </div>
+              <div class="hero-stat-item">
+                <span class="stat-emoji">🛡️</span>
+                <div class="stat-details">
+                  <strong>Ultimate Mission:</strong> Guiding, protecting, and having fun with Rapha on his greatest adventures!
+                </div>
+              </div>
+            </div>
+            
+            <p class="hero-quote">"Not all heroes wear capes... some build awesome memories!"</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Main Module Entry -->
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
