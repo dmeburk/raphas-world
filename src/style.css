@@ -405,7 +405,8 @@ body[data-bg="full"] .glass-panel {
   flex-direction: column;
   position: relative;
   overflow: hidden;
-  height: 480px; /* Uniform height for structure */
+  min-height: 480px; /* Uniform minimum height for structure */
+  height: auto;
 }
 
 /* Card Header Stylings */
