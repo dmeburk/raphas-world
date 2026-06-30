@@ -2024,8 +2024,8 @@ function initBackgroundSlideshow() {
     }
   }
 
-  // Start the slideshow interval (change background every 15 seconds)
-  setInterval(changeBackground, 15000);
+  // Start the slideshow interval (change background every 7 seconds)
+  setInterval(changeBackground, 7000);
 }
 
 // Call on startup
