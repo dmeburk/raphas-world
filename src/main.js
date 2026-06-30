@@ -1184,3 +1184,30 @@ if (heroModal && heroModalBtn && closeHeroModalBtn) {
     }
   });
 }
+
+// --- BOAT MODAL INTERACTION ENGINE ---
+const boatModal = document.getElementById('boat-modal');
+const boatModalBtn = document.getElementById('boat-modal-btn');
+const closeBoatModalBtn = document.getElementById('close-boat-modal');
+
+if (boatModal && boatModalBtn && closeBoatModalBtn) {
+  boatModalBtn.addEventListener('click', () => {
+    initAudio();
+    playSynthSound('powerup');
+    boatModal.classList.add('active');
+    triggerConfettiBlast();
+  });
+
+  closeBoatModalBtn.addEventListener('click', () => {
+    playSynthSound('laser');
+    boatModal.classList.remove('active');
+  });
+
+  boatModal.addEventListener('click', (e) => {
+    if (e.target === boatModal) {
+      playSynthSound('laser');
+      boatModal.classList.remove('active');
+    }
+  });
+}
+
