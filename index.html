@@ -36,6 +36,7 @@
               <button id="handsome-modal-btn" class="hero-link-btn" title="Mr Handsome!">👔 Mr Handsome</button>
               <button id="drumming-modal-btn" class="hero-link-btn" title="Drumming Solo!">🥁 Drumming Solo</button>
               <button id="brah-modal-btn" class="hero-link-btn" title="My brah!">🤙 My brah</button>
+              <button id="drummer-dad-modal-btn" class="hero-link-btn" title="The Little Drummer Dad!">🥁👨 The Little Drummer Dad</button>
             </div>
           </div>
         </div>
@@ -182,10 +183,14 @@
             </div>
           </div>
           <!-- Feeding station controls -->
-          <div class="feeding-controls">
+          <div class="feeding-controls" style="display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 15px; padding: 0 10px;">
             <button class="treat-btn" data-food="pizza" title="Feed Pizza">🍕 Pizza</button>
             <button class="treat-btn" data-food="cookie" title="Feed Cookie">🍪 Cookie</button>
             <button class="treat-btn" data-food="broccoli" title="Feed Broccoli (Danger!)">🥦 Broccoli</button>
+            <button class="treat-btn" data-food="applesauce" title="Feed Applesauce">🍎 Applesauce</button>
+            <button class="treat-btn" data-food="chicken" title="Feed Chicken Wings">🍗 Chicken Wings</button>
+            <button class="treat-btn" data-food="soccer" title="Throw Soccer Ball">⚽ Soccer Ball</button>
+            <button class="treat-btn" data-food="minecraft" title="Feed Minecraft Dirt Block">🧱 Dirt Block</button>
           </div>
         </section>
 
@@ -836,6 +841,20 @@
       </div>
     </div>
 
+    <!-- Fullscreen Drummer Dad Overlay Modal -->
+    <div id="drummer-dad-modal" class="hero-modal-overlay">
+      <div class="hero-modal-content glass-panel" style="max-width: 600px; padding: 25px;">
+        <button id="close-drummer-dad-modal" class="close-modal-btn" aria-label="Close Modal">&times;</button>
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 15px; text-align: center;">
+          <h2 class="hero-title text-glow" style="font-size: 2.2rem; margin: 0; color: #fff;">🥁 THE LITTLE DRUMMER DAD! 👨</h2>
+          <div class="hero-image-container" style="width: 100%; max-width: 500px; aspect-ratio: auto; overflow: hidden; border-radius: 16px; border: 4px solid var(--color-primary); box-shadow: 0 0 25px var(--color-glow);">
+            <img src="/drummer_dad.png" alt="The Little Drummer Dad" style="width: 100%; height: auto; display: block; object-fit: cover;" />
+          </div>
+          <p class="hero-quote" style="margin-top: 5px; font-size: 1.2rem; color: #e2e8f0; font-style: italic;">"The legendary rhythm master dressed in epic historical gears!" 🥁👑✨</p>
+        </div>
+      </div>
+    </div>
+
     <!-- Fullscreen Drumming Overlay Modal -->
     <div id="drumming-modal" class="hero-modal-overlay">
       <div class="hero-modal-content glass-panel" style="max-width: 460px; padding: 25px;">
@@ -846,9 +865,12 @@
             <video id="drumming-video" src="/drumming.MOV" playsinline controls style="width: 100%; height: 100%; display: block; object-fit: contain;"></video>
           </div>
           <p class="hero-quote" style="margin-top: 5px; font-size: 1.1rem; color: #e2e8f0; font-style: italic;">"Rocking out on the drums with ultimate speed and rhythm!" 🤘🔥🎵</p>
-          <div style="display: flex; gap: 10px; margin-top: 5px; width: 100%; justify-content: center;">
+          <div style="display: flex; flex-wrap: wrap; gap: 10px; margin-top: 5px; width: 100%; justify-content: center;">
             <a href="/drumming.MOV" download class="action-btn" style="margin: 0; padding: 10px 20px; font-size: 0.9rem; text-decoration: none; display: flex; align-items: center; gap: 8px;">
               📥 Download Video
+            </a>
+            <a href="https://photos.app.goo.gl/VPFaQ5bFJnLmsUYN6" target="_blank" rel="noopener noreferrer" class="action-btn" style="margin: 0; padding: 10px 20px; font-size: 0.9rem; text-decoration: none; display: flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #4285F4, #34A853); border-color: #4285F4;">
+              🎬 Stream on Google Photos
             </a>
           </div>
         </div>

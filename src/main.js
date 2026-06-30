@@ -552,6 +552,52 @@ treatButtons.forEach(btn => {
         petMouth.setAttribute('d', 'M 44 58 Q 50 58 56 58');
         petBodyGroup.classList.remove('pet-wiggle');
       }, 1800);
+
+    } else if (food === 'applesauce') {
+      playSynthSound('giggle');
+      // Puckered slurp mouth + giggle shake
+      petMouth.setAttribute('d', 'M 46 58 Q 50 66 54 58');
+      petBodyGroup.classList.add('pet-wiggle');
+      setTimeout(() => {
+        petMouth.setAttribute('d', 'M 44 58 Q 50 58 56 58');
+        petBodyGroup.classList.remove('pet-wiggle');
+      }, 1500);
+
+    } else if (food === 'chicken') {
+      playSynthSound('coin');
+      // Gigantic feast smile + ultra spin
+      petMouth.setAttribute('d', 'M 40 58 Q 50 72 60 58');
+      petBodyGroup.classList.add('pet-spin');
+      setTimeout(() => {
+        petMouth.setAttribute('d', 'M 44 58 Q 50 58 56 58');
+        petBodyGroup.classList.remove('pet-spin');
+      }, 800);
+
+    } else if (food === 'soccer') {
+      playSynthSound('jump');
+      // Bouncing soccer ball reaction: look up and go "O"
+      petMouth.setAttribute('d', 'M 46 58 C 46 62, 54 62, 54 58 C 54 54, 46 54, 46 58'); // Round "O" shape
+      pupilL.setAttribute('cy', '39');
+      pupilR.setAttribute('cy', '39');
+      petBodyGroup.classList.add('pet-wiggle');
+      setTimeout(() => {
+        petMouth.setAttribute('d', 'M 44 58 Q 50 58 56 58');
+        pupilL.setAttribute('cy', '45');
+        pupilR.setAttribute('cy', '45');
+        petBodyGroup.classList.remove('pet-wiggle');
+      }, 1200);
+
+    } else if (food === 'minecraft') {
+      playSynthSound('teleport');
+      // Square pixel mouth + voxel glitch effect (hue-rotation)
+      petMouth.setAttribute('d', 'M 42 56 L 58 56 L 58 64 L 42 64 Z'); // Blocky square mouth
+      petSvg.style.filter = 'hue-rotate(140deg) saturate(2.5) drop-shadow(0 0 15px var(--color-primary))';
+      petBodyGroup.classList.add('pet-spin');
+      setTimeout(() => {
+        petMouth.setAttribute('d', 'M 44 58 Q 50 58 56 58');
+        petSvg.style.filter = '';
+        petBodyGroup.classList.remove('pet-spin');
+      }, 1000);
     }
   });
 });
@@ -1367,6 +1413,32 @@ if (brahModal && brahModalBtn && closeBrahModalBtn) {
     if (e.target === brahModal) {
       playSynthSound('laser');
       brahModal.classList.remove('active');
+    }
+  });
+}
+
+// --- DRUMMER DAD MODAL INTERACTION ENGINE ---
+const drummerDadModal = document.getElementById('drummer-dad-modal');
+const drummerDadModalBtn = document.getElementById('drummer-dad-modal-btn');
+const closeDrummerDadModalBtn = document.getElementById('close-drummer-dad-modal');
+
+if (drummerDadModal && drummerDadModalBtn && closeDrummerDadModalBtn) {
+  drummerDadModalBtn.addEventListener('click', () => {
+    initAudio();
+    playSynthSound('powerup');
+    drummerDadModal.classList.add('active');
+    triggerConfettiBlast();
+  });
+
+  closeDrummerDadModalBtn.addEventListener('click', () => {
+    playSynthSound('laser');
+    drummerDadModal.classList.remove('active');
+  });
+
+  drummerDadModal.addEventListener('click', (e) => {
+    if (e.target === drummerDadModal) {
+      playSynthSound('laser');
+      drummerDadModal.classList.remove('active');
     }
   });
 }
