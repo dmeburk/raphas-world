@@ -234,6 +234,31 @@ themeButtons.forEach(btn => {
 });
 
 
+// --- BACKGROUND PROMINENCE CONTROLLER ---
+const bgButtons = document.querySelectorAll('.bg-btn');
+
+bgButtons.forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetBg = btn.getAttribute('data-bg');
+    
+    // Update active UI classes
+    bgButtons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    
+    // Update data attribute on body
+    document.body.setAttribute('data-bg', targetBg);
+    
+    // Trigger fun synth sound
+    playSynthSound('coin');
+    
+    // Emit a small burst of particles for awesome dynamic feedback
+    if (typeof spawnThemeExplosion === 'function') {
+      spawnThemeExplosion();
+    }
+  });
+});
+
+
 // --- GLOBAL CANVAS PARTICLES & TRAIL SYSTEM ---
 const particleCanvas = document.getElementById('global-particles');
 const pCtx = particleCanvas.getContext('2d');

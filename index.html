@@ -10,7 +10,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@300..700&family=Outfit:wght@100..900&display=swap" rel="stylesheet">
   </head>
-  <body class="theme-space">
+  <body class="theme-space" data-bg="vibrant">
     <!-- Background Canvas for Particles, Cursor Trails, and Special Effects -->
     <canvas id="global-particles"></canvas>
 
@@ -50,6 +50,22 @@
             </button>
             <button class="theme-btn" data-theme="magic" aria-label="Magic Theme">
               <span class="icon">✨</span> Magic
+            </button>
+          </div>
+        </div>
+
+        <!-- Interactive Background Prominence Control -->
+        <div class="bg-dashboard">
+          <span class="control-label">RAPHA BACKGROUND:</span>
+          <div class="bg-buttons">
+            <button class="bg-btn" data-bg="subtle" title="Subtle Watermark">
+              <span class="icon">👻</span> Subtle
+            </button>
+            <button class="bg-btn active" data-bg="vibrant" title="Thematic Glow">
+              <span class="icon">🌟</span> Prominent
+            </button>
+            <button class="bg-btn" data-bg="full" title="Full Color Poster">
+              <span class="icon">🎨</span> Poster
             </button>
           </div>
         </div>

@@ -23,6 +23,7 @@
 .theme-space {
   --color-bg: #060613;
   --color-surface: rgba(15, 23, 42, 0.55);
+  --color-surface-opaque: rgba(10, 15, 30, 0.85);
   --color-border: rgba(99, 102, 241, 0.25);
   --color-border-hover: rgba(99, 102, 241, 0.5);
   --color-primary: #a855f7; /* Purple */
@@ -40,6 +41,7 @@
 .theme-dino {
   --color-bg: #07150a;
   --color-surface: rgba(13, 27, 18, 0.65);
+  --color-surface-opaque: rgba(8, 18, 12, 0.88);
   --color-border: rgba(132, 204, 22, 0.25);
   --color-border-hover: rgba(132, 204, 22, 0.5);
   --color-primary: #84cc16; /* Lime */
@@ -57,6 +59,7 @@
 .theme-arcade {
   --color-bg: #030303;
   --color-surface: rgba(12, 12, 16, 0.7);
+  --color-surface-opaque: rgba(8, 8, 10, 0.9);
   --color-border: rgba(236, 72, 153, 0.4);
   --color-border-hover: rgba(236, 72, 153, 0.7);
   --color-primary: #ec4899; /* Neon Pink */
@@ -74,6 +77,7 @@
 .theme-magic {
   --color-bg: #0f0b1e;
   --color-surface: rgba(30, 18, 46, 0.6);
+  --color-surface-opaque: rgba(20, 12, 32, 0.85);
   --color-border: rgba(244, 114, 182, 0.3);
   --color-border-hover: rgba(244, 114, 182, 0.6);
   --color-primary: #f472b6; /* Pixie Pink */
@@ -130,7 +134,7 @@ body.theme-arcade::after {
   pointer-events: none;
 }
 
-/* Full-page subtle watermark background photo of Rapha */
+/* Full-page background photo of Rapha */
 .background-watermark {
   position: fixed;
   top: 0;
@@ -141,12 +145,42 @@ body.theme-arcade::after {
   background-size: cover;
   background-position: center 30%; /* Focus on his face */
   background-repeat: no-repeat;
-  opacity: 0.08; /* Extremely subtle watermark so text is 100% readable */
   z-index: 1;
   pointer-events: none;
-  filter: grayscale(100%) contrast(1.15); /* Blends perfectly into all dynamic color themes */
+  transition: opacity var(--transition-slow), filter var(--transition-slow), mix-blend-mode var(--transition-slow);
+}
+
+/* Subtle Mode (Default Watermark) */
+body[data-bg="subtle"] .background-watermark {
+  opacity: 0.08;
+  filter: grayscale(100%) contrast(1.1);
   mix-blend-mode: luminosity;
-  transition: opacity var(--transition-slow);
+}
+
+/* Prominent Mode (Vibrant Thematic Glow) */
+body[data-bg="vibrant"] .background-watermark {
+  opacity: 0.28; /* Much more prominent watermark! */
+  filter: grayscale(100%) contrast(1.2) brightness(0.95);
+  mix-blend-mode: luminosity;
+}
+
+/* Poster Mode (Full Color Masterpiece) */
+body[data-bg="full"] .background-watermark {
+  opacity: 0.5; /* Incredibly prominent, fully visible portrait! */
+  filter: grayscale(0%) contrast(1.05) brightness(0.85);
+  mix-blend-mode: normal; /* Displays actual colors */
+}
+
+/* Ensure glass panels adjust their opacity/blur dynamically for elite contrast and readability */
+body[data-bg="vibrant"] .glass-panel {
+  backdrop-filter: blur(16px) saturate(130%);
+  -webkit-backdrop-filter: blur(16px) saturate(130%);
+}
+
+body[data-bg="full"] .glass-panel {
+  background: var(--color-surface-opaque);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
 }
 
 #app {
@@ -307,6 +341,55 @@ body.theme-arcade::after {
 @keyframes wobble {
   0% { transform: rotate(-8deg); }
   100% { transform: rotate(8deg); }
+}
+
+/* --- BACKGROUND PROMINENCE CONTROLLER --- */
+.bg-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.bg-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.bg-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--radius-md);
+  padding: 10px 16px;
+  color: #fff;
+  font-family: var(--font-accent);
+  font-size: 0.9rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.bg-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  transform: translateY(-2px);
+}
+
+.bg-btn.active {
+  background: var(--color-secondary);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 15px var(--color-glow);
+  transform: scale(1.05);
+}
+
+.bg-btn.active .icon {
+  animation: bgPulse 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes bgPulse {
+  0% { transform: scale(0.95) rotate(-5deg); }
+  100% { transform: scale(1.1) rotate(5deg); }
 }
 
 /* --- DASHBOARD GRID LAYOUT --- */
