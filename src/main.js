@@ -1314,6 +1314,37 @@ if (handsomeModal && handsomeModalBtn && closeHandsomeModalBtn) {
   });
 }
 
+// --- DRUMMING MODAL INTERACTION ENGINE ---
+const drummingModal = document.getElementById('drumming-modal');
+const drummingModalBtn = document.getElementById('drumming-modal-btn');
+const closeDrummingModalBtn = document.getElementById('close-drumming-modal');
+const drummingVideo = document.getElementById('drumming-video');
+
+if (drummingModal && drummingModalBtn && closeDrummingModalBtn && drummingVideo) {
+  drummingModalBtn.addEventListener('click', () => {
+    initAudio();
+    playSynthSound('powerup');
+    drummingModal.classList.add('active');
+    triggerConfettiBlast();
+    drummingVideo.play().catch(err => console.log('Video autoplay blocked:', err));
+  });
+
+  const stopVideoAndClose = () => {
+    playSynthSound('laser');
+    drummingModal.classList.remove('active');
+    drummingVideo.pause();
+    drummingVideo.currentTime = 0;
+  };
+
+  closeDrummingModalBtn.addEventListener('click', stopVideoAndClose);
+
+  drummingModal.addEventListener('click', (e) => {
+    if (e.target === drummingModal) {
+      stopVideoAndClose();
+    }
+  });
+}
+
 // --- MY FAVORITE THINGS CAROUSEL MODULE ---
 function initFavoriteThingsCarousel() {
   const slides = document.querySelectorAll('.carousel-slide');
