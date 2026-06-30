@@ -1965,7 +1965,8 @@ function initBackgroundSlideshow() {
     { url: '/bg_0.png', position: 'center center' },
     { url: '/bg_1.png', position: 'center center' },
     { url: '/bg_2.png', position: 'center center' },
-    { url: '/bg_3.png', position: 'center center' }
+    { url: '/bg_3.png', position: 'center center' },
+    { url: '/bg_4.png', position: 'center center' }
   ];
 
   const layer1 = document.getElementById('bg-watermark-1');
