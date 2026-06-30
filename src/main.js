@@ -1421,6 +1421,7 @@ if (brahModal && brahModalBtn && closeBrahModalBtn) {
 const drummerDadModal = document.getElementById('drummer-dad-modal');
 const drummerDadModalBtn = document.getElementById('drummer-dad-modal-btn');
 const closeDrummerDadModalBtn = document.getElementById('close-drummer-dad-modal');
+const drummerDadImg = document.getElementById('drummer-dad-img');
 
 if (drummerDadModal && drummerDadModalBtn && closeDrummerDadModalBtn) {
   drummerDadModalBtn.addEventListener('click', () => {
@@ -1441,6 +1442,24 @@ if (drummerDadModal && drummerDadModalBtn && closeDrummerDadModalBtn) {
       drummerDadModal.classList.remove('active');
     }
   });
+
+  // Flicker / Alternate Dad's photo every second for awesome dynamic action
+  if (drummerDadImg) {
+    let isAlt = false;
+    setInterval(() => {
+      drummerDadImg.classList.add('glitch-flicker');
+      
+      // Swap the source mid-flicker for smooth illusion
+      setTimeout(() => {
+        isAlt = !isAlt;
+        drummerDadImg.src = isAlt ? '/drummer_dad_alt.png' : '/drummer_dad.png';
+      }, 70);
+
+      setTimeout(() => {
+        drummerDadImg.classList.remove('glitch-flicker');
+      }, 160);
+    }, 1000);
+  }
 }
 
 // --- MY FAVORITE THINGS CAROUSEL MODULE ---
