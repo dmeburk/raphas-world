@@ -437,18 +437,20 @@ body[data-bg="full"] .glass-panel {
 /* Responsive Grid Mapping */
 .stats-card { grid-column: span 4; }
 .pet-card { grid-column: span 4; }
+.fav-card { grid-column: span 4; }
 .draw-card { grid-column: span 4; }
 .sound-card { grid-column: span 4; }
-.game-card { grid-column: span 5; }
-.joke-card { grid-column: span 3; }
+.joke-card { grid-column: span 4; }
+.game-card { grid-column: span 12; }
 
 @media (max-width: 1024px) {
   .stats-card { grid-column: span 6; }
   .pet-card { grid-column: span 6; }
-  .draw-card { grid-column: span 12; }
+  .fav-card { grid-column: span 12; }
+  .draw-card { grid-column: span 6; }
   .sound-card { grid-column: span 6; }
-  .game-card { grid-column: span 6; }
   .joke-card { grid-column: span 12; height: 350px; }
+  .game-card { grid-column: span 12; }
 }
 
 @media (max-width: 768px) {
@@ -467,9 +469,285 @@ body[data-bg="full"] .glass-panel {
     flex: 1 1 40%;
     justify-content: center;
   }
-  .stats-card, .pet-card, .draw-card, .sound-card, .game-card, .joke-card {
+  .stats-card, .pet-card, .fav-card, .draw-card, .sound-card, .game-card, .joke-card {
     grid-column: span 12;
   }
+}
+
+/* --- CARD 7: MY FAVORITE THINGS CAROUSEL --- */
+.fav-card {
+  height: 480px;
+}
+
+.carousel-container {
+  position: relative;
+  width: 100%;
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10px;
+}
+
+.carousel-slides {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.carousel-slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  opacity: 0;
+  transform: scale(0.9) translateY(10px);
+  pointer-events: none;
+  transition: opacity var(--transition-slow), transform var(--transition-slow);
+}
+
+.carousel-slide.active {
+  opacity: 1;
+  transform: scale(1) translateY(0);
+  pointer-events: auto;
+}
+
+.slide-illustration {
+  width: 160px;
+  height: 160px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  filter: drop-shadow(0 4px 15px rgba(0,0,0,0.3));
+  transition: transform var(--transition-normal);
+}
+
+.slide-illustration:hover {
+  animation: wiggleIllustration 0.5s ease-in-out infinite alternate;
+}
+
+@keyframes wiggleIllustration {
+  0% { transform: scale(1.05) rotate(-3deg); }
+  100% { transform: scale(1.05) rotate(3deg); }
+}
+
+.tapped-animation {
+  animation: epicTapReaction 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+}
+
+@keyframes epicTapReaction {
+  0% { transform: scale(1) rotate(0); }
+  35% { transform: scale(1.3) rotate(-15deg); }
+  65% { transform: scale(1.2) rotate(15deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+
+.fav-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Specific SVG animations to make the SVGs feel responsive and alive */
+.shimmer-sparkle {
+  transform-origin: center;
+  animation: shimmer 1.5s ease-in-out infinite alternate;
+}
+@keyframes shimmer {
+  0% { opacity: 0.3; transform: scale(0.8); }
+  100% { opacity: 1; transform: scale(1.2); }
+}
+
+.steam-line {
+  stroke-dasharray: 20;
+  stroke-dashoffset: 20;
+  animation: riseSteam 2s linear infinite;
+}
+@keyframes riseSteam {
+  0% { stroke-dashoffset: 20; opacity: 0.4; }
+  50% { opacity: 0.9; }
+  100% { stroke-dashoffset: 0; opacity: 0; }
+}
+
+.soccer-ball-body {
+  transform-origin: 50px 50px;
+  transition: transform var(--transition-slow);
+}
+.carousel-slide.active .soccer-ball-body {
+  animation: rollSoccer 8s linear infinite;
+}
+@keyframes rollSoccer {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.mc-block {
+  transform-origin: 0px -10px;
+  animation: bounceBlock 4s ease-in-out infinite alternate;
+}
+@keyframes bounceBlock {
+  0% { transform: translate(50px, 52px) scale(0.95); }
+  100% { transform: translate(50px, 48px) scale(1.05); }
+}
+
+.comic-book {
+  transform-origin: 0px 5px;
+  animation: pulseBook 3.5s ease-in-out infinite alternate;
+}
+@keyframes pulseBook {
+  0% { transform: translate(50px, 48px) rotate(-3deg) scale(0.98); }
+  100% { transform: translate(50px, 48px) rotate(3deg) scale(1.02); }
+}
+
+.piano-kbd {
+  transform-origin: 0px 5px;
+  animation: rockPiano 4s ease-in-out infinite alternate;
+}
+@keyframes rockPiano {
+  0% { transform: translate(50px, 48px) rotate(-8deg); }
+  100% { transform: translate(50px, 48px) rotate(-12deg); }
+}
+
+.music-note {
+  transform-origin: 5px 10px;
+  animation: floatNote 3s ease-in-out infinite;
+  opacity: 0.8;
+}
+.music-note:nth-child(2) {
+  animation-delay: 1s;
+}
+.music-note:nth-child(3) {
+  animation-delay: 1.8s;
+}
+@keyframes floatNote {
+  0% { transform: translate(0, 0) scale(1) rotate(0deg); opacity: 0; }
+  20% { opacity: 0.9; }
+  80% { opacity: 0.9; }
+  100% { transform: translate(15px, -30px) scale(0.8) rotate(15deg); opacity: 0; }
+}
+
+.pixel-sparkle {
+  animation: voxelBlink 1.5s steps(2, start) infinite alternate;
+}
+@keyframes voxelBlink {
+  0% { opacity: 0.2; transform: scale(0.6); }
+  100% { opacity: 1; transform: scale(1.2); }
+}
+
+.pop-star {
+  transform-origin: center;
+  animation: popScale 2s ease-in-out infinite alternate;
+}
+@keyframes popScale {
+  0% { transform: scale(0.8) rotate(0deg); opacity: 0.4; }
+  100% { transform: scale(1.2) rotate(15deg); opacity: 1; }
+}
+
+/* Info stylings */
+.slide-info {
+  text-align: center;
+  margin-top: 14px;
+}
+
+.fav-badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  padding: 4px 10px;
+  border-radius: 50px;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+}
+
+/* Custom themed badges */
+.badge-applesauce { background: rgba(245, 158, 11, 0.15); color: #fef08a; border: 1px solid rgba(245, 158, 11, 0.3); }
+.badge-wings { background: rgba(234, 88, 12, 0.15); color: #fdba74; border: 1px solid rgba(234, 88, 12, 0.3); }
+.badge-turkey { background: rgba(217, 119, 6, 0.15); color: #fcd34d; border: 1px solid rgba(217, 119, 6, 0.3); }
+.badge-soccer { background: rgba(45, 212, 191, 0.15); color: #99f6e4; border: 1px solid rgba(45, 212, 191, 0.3); }
+.badge-minecraft { background: rgba(74, 222, 128, 0.15); color: #bbf7d0; border: 1px solid rgba(74, 222, 128, 0.3); }
+.badge-dogman { background: rgba(59, 130, 246, 0.15); color: #bfdbfe; border: 1px solid rgba(59, 130, 246, 0.3); }
+.badge-piano { background: rgba(168, 85, 247, 0.15); color: #e9d5ff; border: 1px solid rgba(168, 85, 247, 0.3); }
+
+.fav-title {
+  font-family: var(--font-accent);
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: #fff;
+  margin-bottom: 4px;
+}
+
+.fav-quote {
+  font-size: 0.85rem;
+  font-style: italic;
+  color: var(--color-text-muted);
+}
+
+/* Controls */
+.carousel-control {
+  position: absolute;
+  top: 40%;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 50%;
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 0.95rem;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  z-index: 20;
+  transition: all var(--transition-fast);
+}
+
+.carousel-control:hover {
+  background: var(--color-primary);
+  border-color: var(--color-secondary);
+  box-shadow: 0 0 10px var(--color-glow);
+  transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-control.prev { left: 4px; }
+.carousel-control.next { right: 4px; }
+
+/* Dots indicator */
+.carousel-dots {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  margin-top: auto;
+}
+
+.carousel-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.carousel-dot:hover {
+  background: rgba(255, 255, 255, 0.5);
+  transform: scale(1.2);
+}
+
+.carousel-dot.active {
+  background: var(--color-primary);
+  box-shadow: 0 0 8px var(--color-primary);
+  transform: scale(1.3);
 }
 
 /* --- CARD 1: CHARACTER SHEET / STATS --- */

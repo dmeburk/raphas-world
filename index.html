@@ -187,6 +187,372 @@
           </div>
         </section>
 
+        <!-- Card: My Favorite Things Carousel -->
+        <section class="card fav-card glass-panel animate-reveal">
+          <div class="card-header">
+            <span class="card-icon">💖</span>
+            <h2>My Favorite Things</h2>
+          </div>
+          <p class="card-desc">Click or hover over Rapha's favorites to see them animate!</p>
+          
+          <div class="carousel-container">
+            <div class="carousel-slides">
+              <!-- Slide 1: Applesauce -->
+              <div class="carousel-slide active" data-index="0" data-sound="coin">
+                <div class="slide-illustration">
+                  <svg viewBox="0 0 100 100" class="fav-svg">
+                    <defs>
+                      <linearGradient id="sauceGrad" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#fbbf24"/>
+                        <stop offset="60%" stop-color="#f59e0b"/>
+                        <stop offset="100%" stop-color="#b45309"/>
+                      </linearGradient>
+                      <linearGradient id="bowlGrad" x1="0" y1="0" x2="0" y2="1">
+                        <stop offset="0%" stop-color="rgba(14, 165, 233, 0.4)"/>
+                        <stop offset="100%" stop-color="rgba(2, 132, 199, 0.8)"/>
+                      </linearGradient>
+                      <linearGradient id="metalGrad" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#f1f5f9"/>
+                        <stop offset="50%" stop-color="#cbd5e1"/>
+                        <stop offset="100%" stop-color="#64748b"/>
+                      </linearGradient>
+                    </defs>
+                    <!-- Applesauce Bowl -->
+                    <ellipse cx="50" cy="85" rx="35" ry="8" fill="rgba(0,0,0,0.3)" />
+                    <path d="M15 55 Q 50 65 85 55 C 80 85, 20 85, 15 55 Z" fill="url(#bowlGrad)" stroke="#38bdf8" stroke-width="1.5" />
+                    <!-- Sauce inside bowl -->
+                    <path d="M17 54 Q 50 59 83 54 C 80 72, 20 72, 17 54 Z" fill="url(#sauceGrad)" />
+                    <ellipse cx="50" cy="54" rx="33" ry="5" fill="#fef08a" opacity="0.3" />
+                    <!-- Chrome Spoon -->
+                    <g transform="translate(0, 0)">
+                      <path d="M40 30 Q 30 20 22 15 Q 18 18 25 28 L 38 48 Q 45 42 40 30 Z" fill="url(#metalGrad)" stroke="#94a3b8" stroke-width="1" />
+                      <ellipse cx="44" cy="51" rx="8" ry="12" fill="url(#sauceGrad)" stroke="#f59e0b" stroke-width="1" transform="rotate(-30 44 51)" />
+                    </g>
+                    <!-- Sparkles -->
+                    <circle cx="20" cy="30" r="1.5" fill="#fff" class="shimmer-sparkle" />
+                    <circle cx="80" cy="40" r="2.5" fill="#fef08a" class="shimmer-sparkle" />
+                    <circle cx="75" cy="70" r="1" fill="#fff" />
+                  </svg>
+                </div>
+                <div class="slide-info">
+                  <span class="fav-badge badge-applesauce">🍏 DELICIOUS SNACK</span>
+                  <h3 class="fav-title">Applesauce</h3>
+                  <p class="fav-quote">"So sweet, smooth, and delicious!"</p>
+                </div>
+              </div>
+
+              <!-- Slide 2: Chicken Wings -->
+              <div class="carousel-slide" data-index="1" data-sound="laser">
+                <div class="slide-illustration">
+                  <svg viewBox="0 0 100 100" class="fav-svg">
+                    <defs>
+                      <linearGradient id="drumGrad" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#ea580c"/>
+                        <stop offset="50%" stop-color="#c2410c"/>
+                        <stop offset="100%" stop-color="#7c2d12"/>
+                      </linearGradient>
+                      <linearGradient id="boneGrad" x1="0" y1="0" x2="1" y2="0">
+                        <stop offset="0%" stop-color="#ffffff"/>
+                        <stop offset="100%" stop-color="#e2e8f0"/>
+                      </linearGradient>
+                    </defs>
+                    <!-- Shadow -->
+                    <ellipse cx="50" cy="85" rx="38" ry="7" fill="rgba(0,0,0,0.3)" />
+                    <!-- First Wing (back) -->
+                    <g transform="translate(10, -5) rotate(15 50 50)">
+                      <path d="M 25 70 C 15 65, 10 50, 20 40 Q 35 25 55 45 C 65 55, 60 70, 45 75 Z" fill="#9a3412" opacity="0.8" />
+                      <rect x="52" y="42" width="16" height="8" rx="4" fill="#cbd5e1" transform="rotate(30 52 42)" />
+                    </g>
+                    <!-- Second Wing (front) -->
+                    <g transform="translate(-5, 5) rotate(-15 50 50)">
+                      <!-- Meat -->
+                      <path d="M 28 68 C 18 60, 15 42, 28 32 C 45 18, 65 35, 62 55 C 60 68, 45 72, 28 68 Z" fill="url(#drumGrad)" stroke="#ea580c" stroke-width="1" />
+                      <!-- Glaze sheen -->
+                      <path d="M 32 40 Q 45 25 55 38" fill="none" stroke="#fdba74" stroke-width="3" stroke-linecap="round" opacity="0.6" />
+                      <!-- Bone handle -->
+                      <g transform="translate(56, 42) rotate(35)">
+                        <rect x="0" y="-3" width="22" height="7" rx="3" fill="url(#boneGrad)" />
+                        <circle cx="22" cy="-2" r="4.5" fill="url(#boneGrad)" />
+                        <circle cx="22" cy="2" r="4.5" fill="url(#boneGrad)" />
+                      </g>
+                    </g>
+                    <!-- Heat waves / steam -->
+                    <path d="M 30 20 Q 33 12 30 5" fill="none" stroke="#f97316" stroke-width="1.5" stroke-linecap="round" class="steam-line" />
+                    <path d="M 50 22 Q 53 15 50 8" fill="none" stroke="#ea580c" stroke-width="1.5" stroke-linecap="round" class="steam-line" />
+                  </svg>
+                </div>
+                <div class="slide-info">
+                  <span class="fav-badge badge-wings">🍗 CRISPY GLOW</span>
+                  <h3 class="fav-title">Chicken Wings</h3>
+                  <p class="fav-quote">"Saucy, crispy, and totally epic!"</p>
+                </div>
+              </div>
+
+              <!-- Slide 3: Turkey Leg -->
+              <div class="carousel-slide" data-index="2" data-sound="explosion">
+                <div class="slide-illustration">
+                  <svg viewBox="0 0 100 100" class="fav-svg">
+                    <defs>
+                      <linearGradient id="turkeyGrad" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#d97706"/>
+                        <stop offset="60%" stop-color="#b45309"/>
+                        <stop offset="100%" stop-color="#78350f"/>
+                      </linearGradient>
+                    </defs>
+                    <!-- Shadow -->
+                    <ellipse cx="50" cy="85" rx="40" ry="7" fill="rgba(0,0,0,0.3)" />
+                    <!-- Giant Turkey Drumstick -->
+                    <g transform="translate(5, 5) rotate(-10 50 50)">
+                      <!-- Meat blob -->
+                      <path d="M 15 65 C 5 50, 8 20, 32 15 C 60 10, 75 42, 65 65 C 55 78, 25 75, 15 65 Z" fill="url(#turkeyGrad)" stroke="#92400e" stroke-width="1" />
+                      <!-- Highlight -->
+                      <path d="M 25 25 Q 45 15 60 30" fill="none" stroke="#fde047" stroke-width="3" stroke-linecap="round" opacity="0.5" />
+                      <!-- Giant Bone handle -->
+                      <g transform="translate(56, 56) rotate(45)">
+                        <rect x="0" y="-5" width="28" height="11" rx="4" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1" />
+                        <circle cx="28" cy="-4" r="7.5" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1" />
+                        <circle cx="28" cy="4" r="7.5" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1" />
+                      </g>
+                    </g>
+                    <!-- Little cartoon sparks -->
+                    <path d="M 12 12 L 18 18 M 12 18 L 18 12" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" />
+                    <path d="M 75 12 L 81 18 M 75 18 L 81 12" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" />
+                  </svg>
+                </div>
+                <div class="slide-info">
+                  <span class="fav-badge badge-turkey">🍖 FEAST MODE</span>
+                  <h3 class="fav-title">Large Turkey Leg</h3>
+                  <p class="fav-quote">"A giant feast on a bone!"</p>
+                </div>
+              </div>
+
+              <!-- Slide 4: Soccer Ball -->
+              <div class="carousel-slide" data-index="3" data-sound="jump">
+                <div class="slide-illustration">
+                  <svg viewBox="0 0 100 100" class="fav-svg">
+                    <defs>
+                      <radialGradient id="soccerSphere" cx="35%" cy="35%" r="65%">
+                        <stop offset="0%" stop-color="#ffffff" />
+                        <stop offset="50%" stop-color="#f1f5f9" />
+                        <stop offset="85%" stop-color="#cbd5e1" />
+                        <stop offset="100%" stop-color="#94a3b8" />
+                      </radialGradient>
+                    </defs>
+                    <!-- Shadow -->
+                    <ellipse cx="50" cy="88" rx="30" ry="6" fill="rgba(0,0,0,0.3)" />
+                    
+                    <!-- Spinning speed trails -->
+                    <path d="M 15 35 Q 5 50 18 65" fill="none" stroke="#2dd4bf" stroke-width="2" stroke-linecap="round" stroke-dasharray="5 5" />
+                    <path d="M 85 35 Q 95 50 82 65" fill="none" stroke="#38bdf8" stroke-width="2" stroke-linecap="round" stroke-dasharray="5 5" />
+
+                    <!-- Soccer Ball Body -->
+                    <g class="soccer-ball-body">
+                      <!-- Base sphere -->
+                      <circle cx="50" cy="50" r="32" fill="url(#soccerSphere)" stroke="#475569" stroke-width="1.5" />
+                      
+                      <!-- Center pentagon -->
+                      <polygon points="50,40 61,48 57,61 43,61 39,48" fill="#1e1b4b" stroke="#000" stroke-width="1" />
+                      
+                      <!-- Outward seams & panels -->
+                      <line x1="50" y1="40" x2="50" y2="24" stroke="#475569" stroke-width="1.5" />
+                      <line x1="61" y1="48" x2="76" y2="44" stroke="#475569" stroke-width="1.5" />
+                      <line x1="57" y1="61" x2="68" y2="72" stroke="#475569" stroke-width="1.5" />
+                      <line x1="43" y1="61" x2="32" y2="72" stroke="#475569" stroke-width="1.5" />
+                      <line x1="39" y1="48" x2="24" y2="44" stroke="#475569" stroke-width="1.5" />
+
+                      <!-- Edge shapes -->
+                      <polygon points="50,24 40,18 32,23 39,34" fill="none" stroke="#475569" stroke-width="1.5" />
+                      <polygon points="50,24 60,18 68,23 61,34" fill="none" stroke="#475569" stroke-width="1.5" />
+                      <polygon points="76,44 81,54 77,65 67,61" fill="none" stroke="#475569" stroke-width="1.5" />
+                      <polygon points="24,44 19,54 23,65 33,61" fill="none" stroke="#475569" stroke-width="1.5" />
+                      <polygon points="68,72 59,78 50,75 57,61" fill="none" stroke="#475569" stroke-width="1.5" />
+                      <polygon points="32,72 41,78 50,75 43,61" fill="none" stroke="#475569" stroke-width="1.5" />
+                    </g>
+                  </svg>
+                </div>
+                <div class="slide-info">
+                  <span class="fav-badge badge-soccer">⚽ SOCCER STAR</span>
+                  <h3 class="fav-title">Soccer Ball</h3>
+                  <p class="fav-quote">"Goal! Kicking with epic power!"</p>
+                </div>
+              </div>
+
+              <!-- Slide 5: Minecraft Logo -->
+              <div class="carousel-slide" data-index="4" data-sound="powerup">
+                <div class="slide-illustration">
+                  <svg viewBox="0 0 100 100" class="fav-svg">
+                    <!-- Isometric Minecraft Grass Block -->
+                    <g transform="translate(50, 52)" class="mc-block">
+                      <!-- Drop Shadow -->
+                      <polygon points="-36,15 0,33 36,15 0,-3" fill="rgba(0,0,0,0.4)" />
+
+                      <!-- Left Face (Dirt) -->
+                      <polygon points="-32,10 0,26 0,-12 -32,-28" fill="#5c4033" stroke="#3d2b1f" stroke-width="1" />
+                      <!-- Right Face (Dirt) -->
+                      <polygon points="32,10 0,26 0,-12 32,-28" fill="#4d3026" stroke="#2d1f18" stroke-width="1" />
+                      <!-- Top Face (Grass) -->
+                      <polygon points="0,-12 -32,-28 0,-44 32,-28" fill="#4ade80" stroke="#22c55e" stroke-width="1" />
+
+                      <!-- Pixellated Grass Side Overhang Left -->
+                      <polygon points="-32,-28 -24,-24 -24,-16 -16,-20 -16,-12 -8,-16 -8,-24 0,-20 0,-12 -32,-12" fill="#22c55e" />
+                      <!-- Pixellated Grass Side Overhang Right -->
+                      <polygon points="32,-28 24,-24 24,-16 16,-20 16,-12 8,-16 8,-24 0,-20 0,-12 32,-12" fill="#16a34a" />
+
+                      <!-- Pickaxe Outline Overlay (floating playfully next to it) -->
+                      <g transform="translate(18, -35) scale(0.6)">
+                        <!-- Handle -->
+                        <line x1="-15" y1="15" x2="10" y2="-10" stroke="#b45309" stroke-width="3" stroke-linecap="round" />
+                        <!-- Head -->
+                        <path d="M -12 -12 C -6 -18, 6 -18, 12 -12" fill="none" stroke="#38bdf8" stroke-width="4.5" stroke-linecap="round" />
+                      </g>
+                    </g>
+                    <!-- Floating Voxel Sparkles -->
+                    <rect x="25" y="15" width="4" height="4" fill="#38bdf8" class="pixel-sparkle" />
+                    <rect x="75" y="45" width="5" height="5" fill="#4ade80" class="pixel-sparkle" />
+                    <rect x="18" y="55" width="3" height="3" fill="#fbbf24" class="pixel-sparkle" />
+                  </svg>
+                </div>
+                <div class="slide-info">
+                  <span class="fav-badge badge-minecraft">⛏️ CRAFT ELITE</span>
+                  <h3 class="fav-title">Minecraft Extraordinaire</h3>
+                  <p class="fav-quote">"Building blocks of infinite fun!"</p>
+                </div>
+              </div>
+
+              <!-- Slide 6: Dogman Comic Book -->
+              <div class="carousel-slide" data-index="5" data-sound="teleport">
+                <div class="slide-illustration">
+                  <svg viewBox="0 0 100 100" class="fav-svg">
+                    <defs>
+                      <linearGradient id="coverGrad" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#3b82f6" />
+                        <stop offset="100%" stop-color="#1d4ed8" />
+                      </linearGradient>
+                    </defs>
+                    <!-- Shadow -->
+                    <ellipse cx="50" cy="85" rx="35" ry="6" fill="rgba(0,0,0,0.3)" />
+
+                    <!-- Comic Book (Open) -->
+                    <g transform="translate(50, 48) rotate(-5)" class="comic-book">
+                      <!-- Open pages back layer -->
+                      <path d="M-36 -15 C-20 -25, -2 -15, -2 -12 L-2 24 C-2 20, -20 10, -36 20 Z" fill="#e2e8f0" stroke="#94a3b8" stroke-width="1.5" />
+                      <path d="M36 -15 C20 -25, 2 -15, 2 -12 L2 24 C2 20, 20 10, 36 20 Z" fill="#f8fafc" stroke="#cbd5e1" stroke-width="1.5" />
+
+                      <!-- Left panel (Dog Man hero silhouette!) -->
+                      <g transform="translate(-18, 5) scale(0.65)">
+                        <!-- Star badge -->
+                        <polygon points="0,-15 4,-3 15,-3 6,5 10,15 0,8 -10,15 -6,5 -15,-3 -4,-3" fill="#facc15" stroke="#eab308" stroke-width="1" />
+                        <!-- Dog cap silhouette -->
+                        <path d="M -12 -2 Q 0 -15 12 -2 L 15 4 L -15 4 Z" fill="#3b82f6" />
+                        <rect x="-18" y="2" width="36" height="3" rx="1.5" fill="#1e40af" />
+                      </g>
+
+                      <!-- Right panel (Action Bubbles!) -->
+                      <g transform="translate(18, 2)">
+                        <!-- Speech bubble -->
+                        <path d="M -12 -12 Q -15 -12 -15 -8 Q -15 -4 -10 -4 L -12 2 L -6 -4 Q -2 -4 -2 -8 Q -2 -12 -12 -12 Z" fill="#fbbf24" stroke="#d97706" stroke-width="1" />
+                        <text x="-12" y="-7" font-size="5" font-weight="900" font-family="var(--font-accent)" fill="#7c2d12" text-anchor="middle">HERO!</text>
+                        <!-- Action lines -->
+                        <line x1="8" y1="-12" x2="16" y2="-16" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round" />
+                        <line x1="12" y1="-2" x2="20" y2="0" stroke="#ef4444" stroke-width="1.5" stroke-linecap="round" />
+                      </g>
+                    </g>
+                    <!-- Floating Comic Stars -->
+                    <polygon points="15,22 18,27 24,27 20,31 22,37 15,33 8,37 10,31 6,27 12,27" fill="#fbbf24" class="pop-star" />
+                    <polygon points="85,25 87,28 91,28 88,30 89,34 85,32 81,34 82,30 79,28 83,28" fill="#f472b6" class="pop-star" />
+                  </svg>
+                </div>
+                <div class="slide-info">
+                  <span class="fav-badge badge-dogman">🐶 COMIC BOOK</span>
+                  <h3 class="fav-title">Dog Man Comics</h3>
+                  <p class="fav-quote">"Reading is an action-packed adventure!"</p>
+                </div>
+              </div>
+
+              <!-- Slide 7: Piano -->
+              <div class="carousel-slide" data-index="6" data-sound="melody3">
+                <div class="slide-illustration">
+                  <svg viewBox="0 0 100 100" class="fav-svg">
+                    <defs>
+                      <linearGradient id="pianoGrad" x1="0" y1="0" x2="1" y2="1">
+                        <stop offset="0%" stop-color="#1e293b" />
+                        <stop offset="100%" stop-color="#0f172a" />
+                      </linearGradient>
+                    </defs>
+                    <!-- Shadow -->
+                    <ellipse cx="50" cy="85" rx="38" ry="6" fill="rgba(0,0,0,0.3)" />
+
+                    <!-- Isometric Piano/Keyboard -->
+                    <g transform="translate(50, 48) rotate(-10)" class="piano-kbd">
+                      <!-- Base keyboard stand/frame -->
+                      <polygon points="-38,-4 38,-4 38,14 -38,14" fill="url(#pianoGrad)" stroke="#475569" stroke-width="1.5" />
+                      
+                      <!-- White keys -->
+                      <g fill="#f8fafc" stroke="#94a3b8" stroke-width="0.75">
+                        <rect x="-34" y="-2" width="6" height="14" rx="1" />
+                        <rect x="-27" y="-2" width="6" height="14" rx="1" />
+                        <rect x="-20" y="-2" width="6" height="14" rx="1" />
+                        <rect x="-13" y="-2" width="6" height="14" rx="1" />
+                        <rect x="-6" y="-2" width="6" height="14" rx="1" />
+                        <rect x="1" y="-2" width="6" height="14" rx="1" />
+                        <rect x="8" y="-2" width="6" height="14" rx="1" />
+                        <rect x="15" y="-2" width="6" height="14" rx="1" />
+                        <rect x="22" y="-2" width="6" height="14" rx="1" />
+                        <rect x="29" y="-2" width="6" height="14" rx="1" />
+                      </g>
+
+                      <!-- Black keys -->
+                      <g fill="#020617" stroke="#1e293b" stroke-width="0.5">
+                        <rect x="-29.5" y="-2" width="3.5" height="9" rx="0.5" />
+                        <rect x="-22.5" y="-2" width="3.5" height="9" rx="0.5" />
+                        <!-- Gap between groups -->
+                        <rect x="-8.5" y="-2" width="3.5" height="9" rx="0.5" />
+                        <rect x="-1.5" y="-2" width="3.5" height="9" rx="0.5" />
+                        <rect x="5.5" y="-2" width="3.5" height="9" rx="0.5" />
+                        <!-- Gap -->
+                        <rect x="19.5" y="-2" width="3.5" height="9" rx="0.5" />
+                        <rect x="26.5" y="-2" width="3.5" height="9" rx="0.5" />
+                      </g>
+                    </g>
+
+                    <!-- Floating Neon Music Notes -->
+                    <g fill="var(--color-primary)" class="music-note" transform="translate(25, 20) scale(0.8)">
+                      <path d="M6 17 A 3 3 0 1 1 3 14 L 3 2 L 11 2 L 11 8 L 5 8" />
+                    </g>
+                    <g fill="var(--color-secondary)" class="music-note" transform="translate(68, 15) scale(0.7)">
+                      <path d="M6 17 A 3 3 0 1 1 3 14 L 3 2 L 11 0 L 11 6 L 5 6" />
+                    </g>
+                    <g fill="#fbbf24" class="music-note" transform="translate(48, 10) scale(0.6)">
+                      <path d="M2 10 A 2 2 0 1 1 0 8 L 0 1 L 6 1 L 6 4 L 2 4" />
+                    </g>
+                  </svg>
+                </div>
+                <div class="slide-info">
+                  <span class="fav-badge badge-piano">🎹 PIANO MAESTRO</span>
+                  <h3 class="fav-title">Piano Melodies</h3>
+                  <p class="fav-quote">"Synthesizing sweet melodies and epic songs!"</p>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Carousel Controls Overlay -->
+            <button class="carousel-control prev" id="fav-prev-btn" aria-label="Previous Slide">◀</button>
+            <button class="carousel-control next" id="fav-next-btn" aria-label="Next Slide">▶</button>
+          </div>
+
+          <!-- Carousel Indicator Dots -->
+          <div class="carousel-dots" id="fav-carousel-dots">
+            <span class="carousel-dot active" data-slide="0"></span>
+            <span class="carousel-dot" data-slide="1"></span>
+            <span class="carousel-dot" data-slide="2"></span>
+            <span class="carousel-dot" data-slide="3"></span>
+            <span class="carousel-dot" data-slide="4"></span>
+            <span class="carousel-dot" data-slide="5"></span>
+            <span class="carousel-dot" data-slide="6"></span>
+          </div>
+        </section>
+
         <!-- Card 3: Neon Pixel Sketchpad -->
         <section class="card draw-card glass-panel animate-reveal">
           <div class="card-header">

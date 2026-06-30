@@ -1314,3 +1314,104 @@ if (handsomeModal && handsomeModalBtn && closeHandsomeModalBtn) {
   });
 }
 
+// --- MY FAVORITE THINGS CAROUSEL MODULE ---
+function initFavoriteThingsCarousel() {
+  const slides = document.querySelectorAll('.carousel-slide');
+  const dots = document.querySelectorAll('.carousel-dot');
+  const prevBtn = document.getElementById('fav-prev-btn');
+  const nextBtn = document.getElementById('fav-next-btn');
+  let currentIdx = 0;
+  let autoCycleTimer = null;
+
+  if (slides.length === 0) return;
+
+  function showSlide(index) {
+    // Clear active states
+    slides.forEach(slide => slide.classList.remove('active'));
+    dots.forEach(dot => dot.classList.remove('active'));
+
+    // Normalize index
+    currentIdx = (index + slides.length) % slides.length;
+
+    // Set new active slide & dot
+    slides[currentIdx].classList.add('active');
+    if (dots[currentIdx]) {
+      dots[currentIdx].classList.add('active');
+    }
+  }
+
+  function handleInteraction(soundType, newIdx) {
+    initAudio();
+    playSynthSound(soundType || 'coin');
+    showSlide(newIdx);
+    resetAutoCycle();
+  }
+
+  // Next and Prev handlers
+  if (prevBtn) {
+    prevBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const targetIdx = currentIdx - 1;
+      const slideSound = slides[(targetIdx + slides.length) % slides.length].getAttribute('data-sound') || 'jump';
+      handleInteraction(slideSound, targetIdx);
+    });
+  }
+
+  if (nextBtn) {
+    nextBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const targetIdx = currentIdx + 1;
+      const slideSound = slides[targetIdx % slides.length].getAttribute('data-sound') || 'jump';
+      handleInteraction(slideSound, targetIdx);
+    });
+  }
+
+  // Dot handlers
+  dots.forEach((dot, idx) => {
+    dot.addEventListener('click', (e) => {
+      e.stopPropagation();
+      const slideSound = slides[idx].getAttribute('data-sound') || 'coin';
+      handleInteraction(slideSound, idx);
+    });
+  });
+
+  // Clicking/tapping on the illustration trigger a high-sensory reaction!
+  slides.forEach((slide) => {
+    const illustration = slide.querySelector('.slide-illustration');
+    if (illustration) {
+      illustration.addEventListener('click', () => {
+        initAudio();
+        const soundType = slide.getAttribute('data-sound') || 'coin';
+        playSynthSound(soundType);
+        triggerConfettiBlast(); // Sparkles/confetti when you tap his favorite things! Amazing!
+        
+        // Add a fun spin/wiggle temporary animation class
+        illustration.classList.add('tapped-animation');
+        setTimeout(() => {
+          illustration.classList.remove('tapped-animation');
+        }, 800);
+      });
+    }
+  });
+
+  // Auto-cycling logic
+  function startAutoCycle() {
+    autoCycleTimer = setInterval(() => {
+      showSlide(currentIdx + 1);
+    }, 4500); // Cycle every 4.5 seconds for peak premium speed
+  }
+
+  function resetAutoCycle() {
+    if (autoCycleTimer) {
+      clearInterval(autoCycleTimer);
+    }
+    startAutoCycle();
+  }
+
+  // Start the engine!
+  startAutoCycle();
+}
+
+// Call on startup
+setTimeout(initFavoriteThingsCarousel, 500);
+
