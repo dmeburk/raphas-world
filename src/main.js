@@ -1724,7 +1724,10 @@ function initGuestbookWidget() {
   try {
     const saved = localStorage.getItem('rapha_guestbook_v2');
     if (saved) {
-      customMessages = JSON.parse(saved);
+      const parsed = JSON.parse(saved);
+      if (Array.isArray(parsed)) {
+        customMessages = parsed;
+      }
     }
   } catch (err) {
     console.error('Error loading guestbook logs:', err);
@@ -1780,6 +1783,7 @@ function initGuestbookWidget() {
 
   // Helper for safe HTML rendering
   function escapeHTML(str) {
+    if (typeof str !== 'string') return '';
     return str.replace(/[&<>'"]/g, 
       tag => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;' }[tag] || tag)
     );
@@ -1826,8 +1830,8 @@ function initGuestbookWidget() {
   function renderMessages() {
     feedContainer.innerHTML = '';
 
-    // Merge default and custom messages (custom newest first)
-    const allMessages = [...DEFAULT_FAMILY_MESSAGES, ...customMessages];
+    // Merge default and custom messages (custom newest first) and filter out non-objects
+    const allMessages = [...DEFAULT_FAMILY_MESSAGES, ...customMessages].filter(msg => msg && typeof msg === 'object');
     
     // Update counter
     if (feedCount) {
@@ -2028,11 +2032,30 @@ function initBackgroundSlideshow() {
   setInterval(changeBackground, 7000);
 }
 
-// Call on startup
+// Call on startup safely
 setTimeout(() => {
-  initFavoriteThingsCarousel();
-  initNoLikeyWidget();
-  initGuestbookWidget();
-  initBackgroundSlideshow();
+  try {
+    initFavoriteThingsCarousel();
+  } catch (err) {
+    console.error('Error in initFavoriteThingsCarousel:', err);
+  }
+
+  try {
+    initNoLikeyWidget();
+  } catch (err) {
+    console.error('Error in initNoLikeyWidget:', err);
+  }
+
+  try {
+    initGuestbookWidget();
+  } catch (err) {
+    console.error('Error in initGuestbookWidget:', err);
+  }
+
+  try {
+    initBackgroundSlideshow();
+  } catch (err) {
+    console.error('Error in initBackgroundSlideshow:', err);
+  }
 }, 500);
 
