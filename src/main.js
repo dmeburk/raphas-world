@@ -1262,3 +1262,29 @@ if (sissyModal && sissyModalBtn && closeSissyModalBtn) {
   });
 }
 
+// --- MOM AND SIS MODAL INTERACTION ENGINE ---
+const momSisModal = document.getElementById('mom-sis-modal');
+const momSisModalBtn = document.getElementById('mom-sis-modal-btn');
+const closeMomSisModalBtn = document.getElementById('close-mom-sis-modal');
+
+if (momSisModal && momSisModalBtn && closeMomSisModalBtn) {
+  momSisModalBtn.addEventListener('click', () => {
+    initAudio();
+    playSynthSound('powerup');
+    momSisModal.classList.add('active');
+    triggerConfettiBlast();
+  });
+
+  closeMomSisModalBtn.addEventListener('click', () => {
+    playSynthSound('laser');
+    momSisModal.classList.remove('active');
+  });
+
+  momSisModal.addEventListener('click', (e) => {
+    if (e.target === momSisModal) {
+      playSynthSound('laser');
+      momSisModal.classList.remove('active');
+    }
+  });
+}
+
