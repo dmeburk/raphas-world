@@ -1502,6 +1502,32 @@ if (drummerDadModal && drummerDadModalBtn && closeDrummerDadModalBtn) {
   }
 }
 
+// --- A LOTTA BURKS MODAL INTERACTION ENGINE ---
+const lotOfBurksModal = document.getElementById('lot-of-burks-modal');
+const lotOfBurksModalBtn = document.getElementById('lot-of-burks-modal-btn');
+const closeLotOfBurksModalBtn = document.getElementById('close-lot-of-burks-modal');
+
+if (lotOfBurksModal && lotOfBurksModalBtn && closeLotOfBurksModalBtn) {
+  lotOfBurksModalBtn.addEventListener('click', () => {
+    initAudio();
+    playSynthSound('powerup');
+    lotOfBurksModal.classList.add('active');
+    triggerConfettiBlast();
+  });
+
+  closeLotOfBurksModalBtn.addEventListener('click', () => {
+    playSynthSound('laser');
+    lotOfBurksModal.classList.remove('active');
+  });
+
+  lotOfBurksModal.addEventListener('click', (e) => {
+    if (e.target === lotOfBurksModal) {
+      playSynthSound('laser');
+      lotOfBurksModal.classList.remove('active');
+    }
+  });
+}
+
 // --- MY FAVORITE THINGS CAROUSEL MODULE ---
 function initFavoriteThingsCarousel() {
   const slides = document.querySelectorAll('.carousel-slide');
