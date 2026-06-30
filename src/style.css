@@ -1778,6 +1778,9 @@ body[data-bg="full"] .glass-panel {
     grid-template-columns: 1fr;
     gap: 24px;
   }
+  .guestbook-feed {
+    max-height: 350px !important; /* Restrict height on mobile for viewport compatibility */
+  }
 }
 
 .guestbook-form-panel {
@@ -1915,11 +1918,16 @@ body[data-bg="full"] .glass-panel {
   display: flex;
   flex-direction: column;
   width: 100%;
+  min-height: 0; /* Enable grid item content resizing safely */
 }
 
 .guestbook-feed {
   max-height: 420px;
+  min-height: 200px; /* Prevent layout collapse */
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch; /* Momentum scrolling for mobile Safari */
+  scroll-behavior: smooth;
+  overscroll-behavior: contain; /* Contain scroll within panel */
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -1927,20 +1935,22 @@ body[data-bg="full"] .glass-panel {
   scrollbar-width: thin;
 }
 
-/* Customized Glowing Scrollbars */
-.guestbook-feed::-webkit-scrollbar {
-  width: 6px;
-}
+/* Customized Glowing Scrollbars - Desktop only to preserve mobile native scroll */
+@media (hover: hover) {
+  .guestbook-feed::-webkit-scrollbar {
+    width: 6px;
+  }
 
-.guestbook-feed::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.01);
-  border-radius: 10px;
-}
+  .guestbook-feed::-webkit-scrollbar-track {
+    background: rgba(255, 255, 255, 0.01);
+    border-radius: 10px;
+  }
 
-.guestbook-feed::-webkit-scrollbar-thumb {
-  background: var(--color-primary);
-  border-radius: 10px;
-  box-shadow: 0 0 8px var(--color-glow);
+  .guestbook-feed::-webkit-scrollbar-thumb {
+    background: var(--color-primary);
+    border-radius: 10px;
+    box-shadow: 0 0 8px var(--color-glow);
+  }
 }
 
 /* Message Item styling */
