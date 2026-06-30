@@ -1288,3 +1288,29 @@ if (momSisModal && momSisModalBtn && closeMomSisModalBtn) {
   });
 }
 
+// --- MR HANDSOME MODAL INTERACTION ENGINE ---
+const handsomeModal = document.getElementById('handsome-modal');
+const handsomeModalBtn = document.getElementById('handsome-modal-btn');
+const closeHandsomeModalBtn = document.getElementById('close-handsome-modal');
+
+if (handsomeModal && handsomeModalBtn && closeHandsomeModalBtn) {
+  handsomeModalBtn.addEventListener('click', () => {
+    initAudio();
+    playSynthSound('powerup');
+    handsomeModal.classList.add('active');
+    triggerConfettiBlast();
+  });
+
+  closeHandsomeModalBtn.addEventListener('click', () => {
+    playSynthSound('laser');
+    handsomeModal.classList.remove('active');
+  });
+
+  handsomeModal.addEventListener('click', (e) => {
+    if (e.target === handsomeModal) {
+      playSynthSound('laser');
+      handsomeModal.classList.remove('active');
+    }
+  });
+}
+
