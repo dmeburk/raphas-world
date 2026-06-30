@@ -438,15 +438,17 @@ body[data-bg="full"] .glass-panel {
 .stats-card { grid-column: span 4; }
 .pet-card { grid-column: span 4; }
 .fav-card { grid-column: span 4; }
+.nolikey-card { grid-column: span 4; }
 .draw-card { grid-column: span 4; }
 .sound-card { grid-column: span 4; }
 .joke-card { grid-column: span 4; }
-.game-card { grid-column: span 12; }
+.game-card { grid-column: span 8; }
 
 @media (max-width: 1024px) {
   .stats-card { grid-column: span 6; }
   .pet-card { grid-column: span 6; }
   .fav-card { grid-column: span 12; }
+  .nolikey-card { grid-column: span 12; }
   .draw-card { grid-column: span 6; }
   .sound-card { grid-column: span 6; }
   .joke-card { grid-column: span 12; height: 350px; }
@@ -469,7 +471,7 @@ body[data-bg="full"] .glass-panel {
     flex: 1 1 40%;
     justify-content: center;
   }
-  .stats-card, .pet-card, .fav-card, .draw-card, .sound-card, .game-card, .joke-card {
+  .stats-card, .pet-card, .fav-card, .nolikey-card, .draw-card, .sound-card, .game-card, .joke-card {
     grid-column: span 12;
   }
 }
@@ -1619,4 +1621,139 @@ body[data-bg="full"] .glass-panel {
   border-left: 3px solid #eab308;
   padding-left: 14px;
   margin-top: 8px;
+}
+
+/* --- CARD: THINGS RAFA NO LICKEY --- */
+.nolikey-card {
+  min-height: 480px;
+}
+
+.nolikey-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  flex: 1;
+  margin-top: 6px;
+  margin-bottom: 12px;
+}
+
+.nolikey-item {
+  background: rgba(239, 68, 68, 0.05);
+  border: 1px solid rgba(239, 68, 68, 0.15);
+  border-radius: var(--radius-md);
+  padding: 12px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 6px;
+  transition: all var(--transition-normal);
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Custom red hazard glow and lift on hover */
+.nolikey-item:hover {
+  transform: translateY(-4px) scale(1.04);
+  background: rgba(239, 68, 68, 0.14);
+  border-color: rgba(239, 68, 68, 0.65);
+  box-shadow: 0 0 18px rgba(239, 68, 68, 0.4), inset 0 0 8px rgba(239, 68, 68, 0.15);
+}
+
+.nolikey-icon-wrapper {
+  position: relative;
+  font-size: 2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: all var(--transition-normal);
+}
+
+.nolikey-item:hover .nolikey-icon-wrapper {
+  background: rgba(239, 68, 68, 0.16);
+  border-color: rgba(239, 68, 68, 0.45);
+  transform: rotate(-12deg) scale(1.1);
+}
+
+.nolikey-emoji {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+/* Small flashing hazard indicator badge */
+.nolikey-hazard {
+  position: absolute;
+  top: -3px;
+  right: -3px;
+  font-size: 0.85rem;
+  background: rgba(15, 23, 42, 0.9);
+  border: 1px solid rgba(239, 68, 68, 0.5);
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+  animation: hazardPulse 1.8s infinite alternate;
+}
+
+@keyframes hazardPulse {
+  0% { transform: scale(1); }
+  100% { transform: scale(1.15); box-shadow: 0 0 6px rgba(239, 68, 68, 0.6); }
+}
+
+.nolikey-label {
+  font-family: var(--font-accent);
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text);
+  letter-spacing: 0.2px;
+}
+
+/* Red glassmorphism alert system details console */
+.nolikey-console {
+  background: rgba(15, 23, 42, 0.6);
+  border: 1px solid rgba(239, 68, 68, 0.2);
+  border-radius: var(--radius-sm);
+  padding: 8px 12px;
+  font-family: 'Courier New', monospace;
+  font-size: 0.72rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(239, 68, 68, 0.9);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.console-prompt {
+  font-weight: bold;
+  color: #ef4444;
+  text-shadow: 0 0 5px rgba(239, 68, 68, 0.4);
+}
+
+.console-text {
+  color: #f8fafc;
+}
+
+/* Threat warning pulse animation on the card when active */
+.nolikey-card.glitch-active {
+  animation: cardShake 0.15s infinite alternate;
+  border-color: #ef4444 !important;
+  box-shadow: 0 0 35px rgba(239, 68, 68, 0.85) !important;
+  background: rgba(239, 68, 68, 0.12) !important;
+}
+
+@keyframes cardShake {
+  0% { transform: translate(-1px, 1px) rotate(-0.5deg); }
+  100% { transform: translate(1px, -1px) rotate(0.5deg); }
 }

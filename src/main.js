@@ -1541,6 +1541,84 @@ function initFavoriteThingsCarousel() {
   startAutoCycle();
 }
 
+// --- THINGS RAFA NO LICKEY INTERACTION ENGINE ---
+function initNoLikeyWidget() {
+  const nolikeyCard = document.getElementById('nolikey-card');
+  const nolikeyItems = document.querySelectorAll('.nolikey-item');
+  const consoleText = document.getElementById('nolikey-console-text');
+
+  if (!nolikeyCard || !nolikeyItems || !consoleText) return;
+
+  const itemHoverMessages = {
+    screentime: 'WARNING: REMAINING MINUTES RUNNING OUT! ⌛',
+    onions: 'WARNING: DETECTING SMELLY VEGETABLE ALLERGENS! 🧅',
+    chocolate: 'ALERT: TASTE BUDS REFUSE SWEET COCOA OVERLOAD! 🍫',
+    redbuns: 'CRITICAL: CODE RED BUN DETECTED IN SECTOR 4! 🥯',
+    milk: 'WARNING: HIGH RISK OF SOGGY CEREAL SPOILAGE! 🥣🥛',
+    lydia: 'ALERT: MY BIG SISTER DETECTED. SHIELD PROTOCOLS ACTIVE! 🛡️'
+  };
+
+  const itemClickMessages = {
+    screentime: 'CRITICAL SHUTDOWN IMMINENT! GO TO BED RIGHT NOW! 🚨📵',
+    onions: 'ERR: TASTEBUDS ON FIRE! CRYING TEARS OF ONION JUICE! 😭🧅',
+    chocolate: 'ERROR: CHOCOLATE REJECTED! SEND WATER IMMEDIATELY! 🤢🍫',
+    redbuns: 'EVACUATE! RED BUN QUARANTINE PROTOCOLS ENGAGED! 🥯💥',
+    milk: 'DISGUSTING! SOGGINESS LEVEL OVER 9000! DRY ONLY! 🤮🥣',
+    lydia: 'ZAP! "RAPHA, DO YOUR PIANO!" SISTER BOSS MODE ACTIVE! 👩‍🦰⚡'
+  };
+
+  const itemSounds = {
+    screentime: 'explosion',
+    onions: 'bleh',
+    chocolate: 'bleh',
+    redbuns: 'teleport',
+    milk: 'bleh',
+    lydia: 'laser'
+  };
+
+  nolikeyItems.forEach(item => {
+    const itemId = item.getAttribute('data-item');
+
+    // On hover enter
+    item.addEventListener('mouseenter', () => {
+      consoleText.textContent = itemHoverMessages[itemId] || 'DANGER DETECTED!';
+      consoleText.style.color = '#ef4444';
+    });
+
+    // On hover leave
+    item.addEventListener('mouseleave', () => {
+      consoleText.textContent = 'SECURE. DANGER LEVELS NOMINAL.';
+      consoleText.style.color = '#f8fafc';
+    });
+
+    // On click
+    item.addEventListener('click', () => {
+      initAudio();
+      
+      // Play custom synth sound
+      const sound = itemSounds[itemId] || 'bleh';
+      playSynthSound(sound);
+
+      // Trigger card glitch / shake effect
+      nolikeyCard.classList.remove('glitch-active');
+      void nolikeyCard.offsetWidth; // Trigger reflow
+      nolikeyCard.classList.add('glitch-active');
+
+      // Show critical click alert in console
+      consoleText.textContent = itemClickMessages[itemId] || 'CRITICAL FAILURE!';
+      consoleText.style.color = '#ff3333';
+
+      // Remove shake after animation completes
+      setTimeout(() => {
+        nolikeyCard.classList.remove('glitch-active');
+      }, 750);
+    });
+  });
+}
+
 // Call on startup
-setTimeout(initFavoriteThingsCarousel, 500);
+setTimeout(() => {
+  initFavoriteThingsCarousel();
+  initNoLikeyWidget();
+}, 500);
 
