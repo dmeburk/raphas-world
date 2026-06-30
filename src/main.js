@@ -1308,6 +1308,32 @@ if (sissyModal && sissyModalBtn && closeSissyModalBtn) {
   });
 }
 
+// --- GRAMMY MODAL INTERACTION ENGINE ---
+const grammyModal = document.getElementById('grammy-modal');
+const grammyModalBtn = document.getElementById('grammy-modal-btn');
+const closeGrammyModalBtn = document.getElementById('close-grammy-modal');
+
+if (grammyModal && grammyModalBtn && closeGrammyModalBtn) {
+  grammyModalBtn.addEventListener('click', () => {
+    initAudio();
+    playSynthSound('powerup');
+    grammyModal.classList.add('active');
+    triggerConfettiBlast();
+  });
+
+  closeGrammyModalBtn.addEventListener('click', () => {
+    playSynthSound('laser');
+    grammyModal.classList.remove('active');
+  });
+
+  grammyModal.addEventListener('click', (e) => {
+    if (e.target === grammyModal) {
+      playSynthSound('laser');
+      grammyModal.classList.remove('active');
+    }
+  });
+}
+
 // --- MOM AND SIS MODAL INTERACTION ENGINE ---
 const momSisModal = document.getElementById('mom-sis-modal');
 const momSisModalBtn = document.getElementById('mom-sis-modal-btn');
