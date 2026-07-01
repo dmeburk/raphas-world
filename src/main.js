@@ -1720,7 +1720,11 @@ function initGuestbookWidget() {
   let selectedAvatar = '🚀';
   let customMessages = [];
 
-  // Load from localStorage
+  // --- CLOUD SYNCHRONIZATION CONFIG ---
+  const CLOUD_DB_URL = 'https://kvdb.io/2uJxRNgarUFwfemBaq7Bbh/messages';
+  let isInitialLoad = true;
+
+  // Load from localStorage first (Stale-While-Revalidate pattern)
   try {
     const saved = localStorage.getItem('rapha_guestbook_v2');
     if (saved) {
@@ -1798,6 +1802,94 @@ function initGuestbookWidget() {
     return `${yy}.${mm}.${dd}`;
   }
 
+  // --- CLOUD DB OPERATIONS ---
+  async function fetchCloudMessages() {
+    try {
+      const res = await fetch(CLOUD_DB_URL);
+      if (res.status === 404) return [];
+      if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+      const parsed = await res.json();
+      return Array.isArray(parsed) ? parsed : [];
+    } catch (err) {
+      console.warn('Error fetching cloud messages:', err);
+      return null; // Silent catch
+    }
+  }
+
+  async function pushCloudMessages(messages) {
+    try {
+      const res = await fetch(CLOUD_DB_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(messages)
+      });
+      if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+      return true;
+    } catch (err) {
+      console.error('Error pushing cloud messages:', err);
+      return false;
+    }
+  }
+
+  async function syncMessages() {
+    const cloudMsgs = await fetchCloudMessages();
+    if (cloudMsgs === null) return; // Keep loading local offline logs if network is out
+
+    // Merge, deduplicate by ID
+    const mergedMap = new Map();
+
+    // Load local memory
+    customMessages.forEach(msg => {
+      if (msg && msg.id) mergedMap.set(msg.id, msg);
+    });
+
+    let hasNewMessages = false;
+    cloudMsgs.forEach(msg => {
+      if (msg && msg.id) {
+        if (!mergedMap.has(msg.id)) {
+          hasNewMessages = true;
+        }
+        mergedMap.set(msg.id, msg);
+      }
+    });
+
+    // Reconstruct custom messages list & sort descending by timestamp in ID (newest first)
+    const mergedList = Array.from(mergedMap.values());
+    mergedList.sort((a, b) => {
+      const tA = parseInt(a.id.split('-')[1]) || 0;
+      const tB = parseInt(b.id.split('-')[1]) || 0;
+      return tB - tA;
+    });
+
+    customMessages = mergedList;
+
+    // Save to local storage
+    try {
+      localStorage.setItem('rapha_guestbook_v2', JSON.stringify(customMessages));
+    } catch (err) {
+      console.error('Error saving local guestbook logs:', err);
+    }
+
+    // Play feedback if new message arrived while looking
+    if (hasNewMessages && !isInitialLoad) {
+      playSynthSound('teleport');
+
+      // Trigger cosmic particle explosion in the feed
+      const rect = feedContainer.getBoundingClientRect();
+      const blastX = rect.left + rect.width / 2;
+      const blastY = rect.top + rect.height / 2;
+
+      for (let i = 0; i < 40; i++) {
+        if (typeof Particle === 'function') {
+          particlesList.push(new Particle(blastX, blastY, true));
+        }
+      }
+    }
+
+    isInitialLoad = false;
+    renderMessages();
+  }
+
   // Handle avatar picker clicks
   const avatarButtons = avatarPicker.querySelectorAll('.avatar-picker-btn');
   avatarButtons.forEach(btn => {
@@ -1869,7 +1961,7 @@ function initGuestbookWidget() {
     // Bind delete buttons
     const deleteBtns = feedContainer.querySelectorAll('.msg-delete-btn');
     deleteBtns.forEach(btn => {
-      btn.addEventListener('click', (e) => {
+      btn.addEventListener('click', async (e) => {
         e.stopPropagation();
         const idToDelete = btn.getAttribute('data-id');
         if (!idToDelete) return;
@@ -1877,7 +1969,7 @@ function initGuestbookWidget() {
         initAudio();
         playSynthSound('explosion');
 
-        // Filter and save
+        // Filter and save locally
         customMessages = customMessages.filter(m => m.id !== idToDelete);
         try {
           localStorage.setItem('rapha_guestbook_v2', JSON.stringify(customMessages));
@@ -1886,12 +1978,15 @@ function initGuestbookWidget() {
         }
 
         renderMessages();
+
+        // Push delete up to cloud
+        await pushCloudMessages(customMessages);
       });
     });
   }
 
   // Handle form submission
-  form.addEventListener('submit', (e) => {
+  form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
     const nameVal = nameInput.value.trim();
@@ -1913,15 +2008,9 @@ function initGuestbookWidget() {
       isCustom: true
     };
 
-    // Add to custom messages (newest first)
+    // Prepend immediately to memory for instant UX response
     customMessages.unshift(newMsg);
-
-    // Save
-    try {
-      localStorage.setItem('rapha_guestbook_v2', JSON.stringify(customMessages));
-    } catch (err) {
-      console.error('Error saving custom logs:', err);
-    }
+    renderMessages();
 
     // Trigger button particle explosion
     const btnRect = submitBtn.getBoundingClientRect();
@@ -1934,7 +2023,7 @@ function initGuestbookWidget() {
       }
     }
 
-    // Reset form
+    // Reset form fields
     form.reset();
     selectedAvatar = '🚀';
     avatarButtons.forEach(b => {
@@ -1946,9 +2035,6 @@ function initGuestbookWidget() {
     charCount.textContent = '0';
     charCount.style.color = 'var(--color-text-muted)';
 
-    // Render & Scroll Feed to the top so they see it
-    renderMessages();
-    
     // Smoothly scroll to top of feed
     setTimeout(() => {
       feedContainer.scrollTo({
@@ -1956,10 +2042,53 @@ function initGuestbookWidget() {
         behavior: 'smooth'
       });
     }, 50);
+
+    // Sync other submissions from cloud first, merge ours, and push to database
+    const cloudMsgs = await fetchCloudMessages();
+    const mergedMap = new Map();
+
+    // 1. Put our local state in map (including the new submission)
+    customMessages.forEach(msg => {
+      if (msg && msg.id) mergedMap.set(msg.id, msg);
+    });
+
+    // 2. Put cloud messages in map (deduplicated)
+    if (cloudMsgs) {
+      cloudMsgs.forEach(msg => {
+        if (msg && msg.id) mergedMap.set(msg.id, msg);
+      });
+    }
+
+    // 3. Re-sort
+    const mergedList = Array.from(mergedMap.values());
+    mergedList.sort((a, b) => {
+      const tA = parseInt(a.id.split('-')[1]) || 0;
+      const tB = parseInt(b.id.split('-')[1]) || 0;
+      return tB - tA;
+    });
+
+    customMessages = mergedList;
+
+    try {
+      localStorage.setItem('rapha_guestbook_v2', JSON.stringify(customMessages));
+    } catch (err) {
+      console.error('Error saving custom logs:', err);
+    }
+
+    renderMessages();
+
+    // Push the consolidated state to cloud
+    await pushCloudMessages(customMessages);
   });
 
-  // Initial Render
+  // Initial Sync from local storage
   renderMessages();
+
+  // Run cloud syncing
+  syncMessages();
+
+  // Set up 10s background polling
+  setInterval(syncMessages, 10000);
 }
 
 // --- DYNAMIC BACKGROUND SLIDESHOW ---
