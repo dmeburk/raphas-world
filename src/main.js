@@ -1724,7 +1724,7 @@ function initGuestbookWidget() {
   let customMessages = [];
 
   // --- CLOUD SYNCHRONIZATION CONFIG ---
-  const CLOUD_DB_URL = 'https://extendsclass.com/api/json-storage/bin/cdaacfa';
+  const CLOUD_DB_URL = 'https://getpantry.cloud/apiv1/pantry/a8ac377d-00da-4333-ad3d-cc87795f3ca1/basket/messages';
   let isInitialLoad = true;
 
   // Load from localStorage first (Stale-While-Revalidate pattern)
@@ -1808,11 +1808,11 @@ function initGuestbookWidget() {
   // --- CLOUD DB OPERATIONS ---
   async function fetchCloudMessages() {
     try {
-      const res = await fetch(`${CLOUD_DB_URL}?_nocache=${Date.now()}`);
+      const res = await fetch(CLOUD_DB_URL);
       if (res.status === 404) return [];
       if (!res.ok) throw new Error(`HTTP error ${res.status}`);
       const data = await res.json();
-      return Array.isArray(data) ? data : [];
+      return (data && Array.isArray(data.messages)) ? data.messages : [];
     } catch (err) {
       console.warn('Error fetching cloud messages:', err);
       return null; // Silent catch
@@ -1822,11 +1822,11 @@ function initGuestbookWidget() {
   async function pushCloudMessages(messages) {
     try {
       const res = await fetch(CLOUD_DB_URL, {
-        method: 'PUT',
+        method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify(messages)
+        body: JSON.stringify({ messages })
       });
       if (!res.ok) throw new Error(`HTTP error ${res.status}`);
       return true;
