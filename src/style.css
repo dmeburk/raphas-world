@@ -1660,6 +1660,10 @@ body[data-bg="full"] .glass-panel {
   overflow: hidden;
 }
 
+.nolikey-item:last-child:nth-child(odd) {
+  grid-column: span 2;
+}
+
 /* Custom red hazard glow and lift on hover */
 .nolikey-item:hover {
   transform: translateY(-4px) scale(1.04);

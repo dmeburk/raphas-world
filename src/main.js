@@ -1641,7 +1641,8 @@ function initNoLikeyWidget() {
     chocolate: 'ALERT: TASTE BUDS REFUSE SWEET COCOA OVERLOAD! 🍫',
     redbuns: 'CRITICAL: CODE RED BUN DETECTED IN SECTOR 4! 🥯',
     milk: 'WARNING: HIGH RISK OF SOGGY CEREAL SPOILAGE! 🥣🥛',
-    rebekah: 'ALERT: MY BIG SISTER DETECTED. SHIELD PROTOCOLS ACTIVE! 🛡️'
+    rebekah: 'ALERT: MY BIG SISTER DETECTED. SHIELD PROTOCOLS ACTIVE! 🛡️',
+    ubers: 'ALERT: STRANGER DANGER! CAR RIDE-SHARE INBOUND! 🚗💨'
   };
 
   const itemClickMessages = {
@@ -1650,7 +1651,8 @@ function initNoLikeyWidget() {
     chocolate: 'ERROR: CHOCOLATE REJECTED! SEND WATER IMMEDIATELY! 🤢🍫',
     redbuns: 'EVACUATE! RED BUN QUARANTINE PROTOCOLS ENGAGED! 🥯💥',
     milk: 'DISGUSTING! SOGGINESS LEVEL OVER 9000! DRY ONLY! 🤮🥣',
-    rebekah: 'ZAP! "RAPHA, DO YOUR PIANO!" SISTER BOSS MODE ACTIVE! 👩‍🦰⚡'
+    rebekah: 'ZAP! "RAPHA, DO YOUR PIANO!" SISTER BOSS MODE ACTIVE! 👩‍🦰⚡',
+    ubers: 'CANCELLED! STRANGER VEHICLE BAN ENGAGED! WALK OR RIDE A BIKE! ❌🚲'
   };
 
   const itemSounds = {
@@ -1659,7 +1661,8 @@ function initNoLikeyWidget() {
     chocolate: 'bleh',
     redbuns: 'teleport',
     milk: 'bleh',
-    rebekah: 'laser'
+    rebekah: 'laser',
+    ubers: 'explosion'
   };
 
   nolikeyItems.forEach(item => {
@@ -1721,7 +1724,7 @@ function initGuestbookWidget() {
   let customMessages = [];
 
   // --- CLOUD SYNCHRONIZATION CONFIG ---
-  const CLOUD_DB_URL = 'https://kvdb.io/2uJxRNgarUFwfemBaq7Bbh/messages';
+  const CLOUD_DB_URL = 'https://extendsclass.com/api/json-storage/bin/cdaacfa';
   let isInitialLoad = true;
 
   // Load from localStorage first (Stale-While-Revalidate pattern)
@@ -1805,11 +1808,11 @@ function initGuestbookWidget() {
   // --- CLOUD DB OPERATIONS ---
   async function fetchCloudMessages() {
     try {
-      const res = await fetch(CLOUD_DB_URL);
+      const res = await fetch(`${CLOUD_DB_URL}?_nocache=${Date.now()}`);
       if (res.status === 404) return [];
       if (!res.ok) throw new Error(`HTTP error ${res.status}`);
-      const parsed = await res.json();
-      return Array.isArray(parsed) ? parsed : [];
+      const data = await res.json();
+      return Array.isArray(data) ? data : [];
     } catch (err) {
       console.warn('Error fetching cloud messages:', err);
       return null; // Silent catch
@@ -1819,8 +1822,10 @@ function initGuestbookWidget() {
   async function pushCloudMessages(messages) {
     try {
       const res = await fetch(CLOUD_DB_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json'
+        },
         body: JSON.stringify(messages)
       });
       if (!res.ok) throw new Error(`HTTP error ${res.status}`);
