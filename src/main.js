@@ -1,6 +1,21 @@
 import './style.css';
+import { initializeApp } from 'firebase/app';
+import { getDatabase, ref, onValue, set, remove } from 'firebase/database';
 
 /* --- RAPHA'S WORLD MAIN APPLICATION SCRIPT --- */
+
+// --- FIREBASE (shared cloud guestbook backend) ---
+const firebaseConfig = {
+  apiKey: 'AIzaSyDUrkYtvA4ZVJB2JvaJ63v59VrzfMdXBrk',
+  authDomain: 'burkplace-guestbook.firebaseapp.com',
+  databaseURL: 'https://burkplace-guestbook-default-rtdb.firebaseio.com',
+  projectId: 'burkplace-guestbook',
+  storageBucket: 'burkplace-guestbook.firebasestorage.app',
+  messagingSenderId: '516326964699',
+  appId: '1:516326964699:web:aac5b53a0e340216cbbbfe'
+};
+const firebaseApp = initializeApp(firebaseConfig);
+const guestbookDB = getDatabase(firebaseApp);
 
 // --- AUDIO SYNTHESIZER ENGINE (Web Audio API) ---
 let audioCtx = null;
@@ -1724,7 +1739,7 @@ function initGuestbookWidget() {
   let customMessages = [];
 
   // --- CLOUD SYNCHRONIZATION CONFIG ---
-  const CLOUD_DB_URL = 'https://getpantry.cloud/apiv1/pantry/a8ac377d-00da-4333-ad3d-cc87795f3ca1/basket/messages';
+  const messagesRef = ref(guestbookDB, 'messages');
   let isInitialLoad = true;
 
   // Load from localStorage first (Stale-While-Revalidate pattern)
@@ -1805,97 +1820,75 @@ function initGuestbookWidget() {
     return `${yy}.${mm}.${dd}`;
   }
 
-  // --- CLOUD DB OPERATIONS ---
-  async function fetchCloudMessages() {
+  // --- CLOUD DB OPERATIONS (Firebase Realtime Database) ---
+  // onValue is a live push subscription: Firebase notifies us the instant ANY
+  // visitor writes or deletes a message, so no polling and no cache-busting is needed.
+  async function writeMessageToCloud(msg) {
     try {
-      // Bypassing any proxy or browser-level caching using cache: 'no-store' and a unique timestamp query param
-      const cacheBustedUrl = `${CLOUD_DB_URL}?t=${Date.now()}`;
-      const res = await fetch(cacheBustedUrl, {
-        cache: 'no-store',
-        headers: {
-          'Cache-Control': 'no-cache, no-store, must-revalidate',
-          'Pragma': 'no-cache',
-          'Expires': '0'
-        }
-      });
-      if (res.status === 404) return [];
-      if (!res.ok) throw new Error(`HTTP error ${res.status}`);
-      const data = await res.json();
-      return (data && Array.isArray(data.messages)) ? data.messages : [];
-    } catch (err) {
-      console.warn('Error fetching cloud messages:', err);
-      return null; // Silent catch
-    }
-  }
-
-  async function pushCloudMessages(messages) {
-    try {
-      const res = await fetch(CLOUD_DB_URL, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Cache-Control': 'no-cache'
-        },
-        body: JSON.stringify({ messages })
-      });
-      if (!res.ok) throw new Error(`HTTP error ${res.status}`);
+      await set(ref(guestbookDB, 'messages/' + msg.id), msg);
       return true;
     } catch (err) {
-      console.error('Error pushing cloud messages:', err);
+      console.error('Error writing message to Firebase:', err);
       return false;
     }
   }
 
-  async function syncMessages() {
-    const cloudMsgs = await fetchCloudMessages();
-    if (cloudMsgs === null) return; // Keep using local offline state if network is out
-
-    // The cloud is the absolute single source of truth.
-    // Detect if there are new messages (present in cloudMsgs but not in our local customMessages)
-    const currentIds = new Set(customMessages.map(msg => msg.id));
-    let hasNewMessages = false;
-
-    cloudMsgs.forEach(msg => {
-      if (msg && msg.id && !currentIds.has(msg.id)) {
-        hasNewMessages = true;
-      }
-    });
-
-    // Replace memory with sorted cloud messages
-    const sortedCloudMsgs = [...cloudMsgs].filter(msg => msg && typeof msg === 'object');
-    sortedCloudMsgs.sort((a, b) => {
-      const tA = parseInt(a.id.split('-')[1]) || 0;
-      const tB = parseInt(b.id.split('-')[1]) || 0;
-      return tB - tA;
-    });
-
-    customMessages = sortedCloudMsgs;
-
-    // Save synced state to local storage
+  async function deleteMessageFromCloud(id) {
     try {
-      localStorage.setItem('rapha_guestbook_v2', JSON.stringify(customMessages));
+      await remove(ref(guestbookDB, 'messages/' + id));
+      return true;
     } catch (err) {
-      console.error('Error saving local guestbook logs:', err);
+      console.error('Error deleting message from Firebase:', err);
+      return false;
     }
+  }
 
-    // Play feedback if a new message arrived from elsewhere
-    if (hasNewMessages && !isInitialLoad) {
-      playSynthSound('teleport');
+  function subscribeToCloudMessages() {
+    onValue(messagesRef, (snapshot) => {
+      const val = snapshot.val();
+      const cloudMsgs = val ? Object.values(val).filter(msg => msg && typeof msg === 'object') : [];
 
-      // Trigger cosmic particle explosion in the feed
-      const rect = feedContainer.getBoundingClientRect();
-      const blastX = rect.left + rect.width / 2;
-      const blastY = rect.top + rect.height / 2;
+      // Detect if there are new messages (present in cloudMsgs but not in our local customMessages)
+      const currentIds = new Set(customMessages.map(msg => msg.id));
+      const hasNewMessages = cloudMsgs.some(msg => msg && msg.id && !currentIds.has(msg.id));
 
-      for (let i = 0; i < 40; i++) {
-        if (typeof Particle === 'function') {
-          particlesList.push(new Particle(blastX, blastY, true));
+      // The cloud is the absolute single source of truth.
+      cloudMsgs.sort((a, b) => {
+        const tA = parseInt(a.id.split('-')[1]) || 0;
+        const tB = parseInt(b.id.split('-')[1]) || 0;
+        return tB - tA;
+      });
+
+      customMessages = cloudMsgs;
+
+      // Save synced state to local storage (instant paint on next cold load)
+      try {
+        localStorage.setItem('rapha_guestbook_v2', JSON.stringify(customMessages));
+      } catch (err) {
+        console.error('Error saving local guestbook logs:', err);
+      }
+
+      // Play feedback if a new message arrived from elsewhere
+      if (hasNewMessages && !isInitialLoad) {
+        playSynthSound('teleport');
+
+        // Trigger cosmic particle explosion in the feed
+        const rect = feedContainer.getBoundingClientRect();
+        const blastX = rect.left + rect.width / 2;
+        const blastY = rect.top + rect.height / 2;
+
+        for (let i = 0; i < 40; i++) {
+          if (typeof Particle === 'function') {
+            particlesList.push(new Particle(blastX, blastY, true));
+          }
         }
       }
-    }
 
-    isInitialLoad = false;
-    renderMessages();
+      isInitialLoad = false;
+      renderMessages();
+    }, (err) => {
+      console.error('Error subscribing to cloud guestbook messages:', err);
+    });
   }
 
   // Handle avatar picker clicks
@@ -1988,7 +1981,7 @@ function initGuestbookWidget() {
         renderMessages();
 
         // Push delete up to cloud
-        await pushCloudMessages(customMessages);
+        await deleteMessageFromCloud(idToDelete);
       });
     });
   }
@@ -2051,46 +2044,14 @@ function initGuestbookWidget() {
       });
     }, 50);
 
-    // Fetch fresh cloud messages directly and merge ONLY our new submission into it
-    const cloudMsgs = await fetchCloudMessages() || [];
-    const validCloudMsgs = cloudMsgs.filter(msg => msg && typeof msg === 'object');
-    const updatedList = [newMsg, ...validCloudMsgs];
-
-    // Deduplicate list by ID
-    const uniqueMap = new Map();
-    updatedList.forEach(msg => {
-      if (msg && msg.id) uniqueMap.set(msg.id, msg);
-    });
-
-    const finalSortedList = Array.from(uniqueMap.values());
-    finalSortedList.sort((a, b) => {
-      const tA = parseInt(a.id.split('-')[1]) || 0;
-      const tB = parseInt(b.id.split('-')[1]) || 0;
-      return tB - tA;
-    });
-
-    customMessages = finalSortedList;
-
-    try {
-      localStorage.setItem('rapha_guestbook_v2', JSON.stringify(customMessages));
-    } catch (err) {
-      console.error('Error saving custom logs:', err);
-    }
-
-    renderMessages();
-
-    // Push the consolidated state to cloud
-    await pushCloudMessages(customMessages);
+    // Write just our new message to the cloud. The onValue subscription below
+    // will pick up the authoritative merged state (including this write) automatically.
+    await writeMessageToCloud(newMsg);
   });
 
-  // Initial Sync from local storage
+  // Initial paint from local storage cache, then subscribe for live cloud updates
   renderMessages();
-
-  // Run cloud syncing
-  syncMessages();
-
-  // Set up 8s background polling
-  setInterval(syncMessages, 8000);
+  subscribeToCloudMessages();
 }
 
 // --- DYNAMIC BACKGROUND SLIDESHOW ---
