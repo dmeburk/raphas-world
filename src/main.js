@@ -1808,7 +1808,16 @@ function initGuestbookWidget() {
   // --- CLOUD DB OPERATIONS ---
   async function fetchCloudMessages() {
     try {
-      const res = await fetch(CLOUD_DB_URL);
+      // Bypassing any proxy or browser-level caching using cache: 'no-store' and a unique timestamp query param
+      const cacheBustedUrl = `${CLOUD_DB_URL}?t=${Date.now()}`;
+      const res = await fetch(cacheBustedUrl, {
+        cache: 'no-store',
+        headers: {
+          'Cache-Control': 'no-cache, no-store, must-revalidate',
+          'Pragma': 'no-cache',
+          'Expires': '0'
+        }
+      });
       if (res.status === 404) return [];
       if (!res.ok) throw new Error(`HTTP error ${res.status}`);
       const data = await res.json();
@@ -1824,7 +1833,8 @@ function initGuestbookWidget() {
       const res = await fetch(CLOUD_DB_URL, {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Cache-Control': 'no-cache'
         },
         body: JSON.stringify({ messages })
       });
@@ -1838,44 +1848,37 @@ function initGuestbookWidget() {
 
   async function syncMessages() {
     const cloudMsgs = await fetchCloudMessages();
-    if (cloudMsgs === null) return; // Keep loading local offline logs if network is out
+    if (cloudMsgs === null) return; // Keep using local offline state if network is out
 
-    // Merge, deduplicate by ID
-    const mergedMap = new Map();
-
-    // Load local memory
-    customMessages.forEach(msg => {
-      if (msg && msg.id) mergedMap.set(msg.id, msg);
-    });
-
+    // The cloud is the absolute single source of truth.
+    // Detect if there are new messages (present in cloudMsgs but not in our local customMessages)
+    const currentIds = new Set(customMessages.map(msg => msg.id));
     let hasNewMessages = false;
+
     cloudMsgs.forEach(msg => {
-      if (msg && msg.id) {
-        if (!mergedMap.has(msg.id)) {
-          hasNewMessages = true;
-        }
-        mergedMap.set(msg.id, msg);
+      if (msg && msg.id && !currentIds.has(msg.id)) {
+        hasNewMessages = true;
       }
     });
 
-    // Reconstruct custom messages list & sort descending by timestamp in ID (newest first)
-    const mergedList = Array.from(mergedMap.values());
-    mergedList.sort((a, b) => {
+    // Replace memory with sorted cloud messages
+    const sortedCloudMsgs = [...cloudMsgs].filter(msg => msg && typeof msg === 'object');
+    sortedCloudMsgs.sort((a, b) => {
       const tA = parseInt(a.id.split('-')[1]) || 0;
       const tB = parseInt(b.id.split('-')[1]) || 0;
       return tB - tA;
     });
 
-    customMessages = mergedList;
+    customMessages = sortedCloudMsgs;
 
-    // Save to local storage
+    // Save synced state to local storage
     try {
       localStorage.setItem('rapha_guestbook_v2', JSON.stringify(customMessages));
     } catch (err) {
       console.error('Error saving local guestbook logs:', err);
     }
 
-    // Play feedback if new message arrived while looking
+    // Play feedback if a new message arrived from elsewhere
     if (hasNewMessages && !isInitialLoad) {
       playSynthSound('teleport');
 
@@ -2048,31 +2051,25 @@ function initGuestbookWidget() {
       });
     }, 50);
 
-    // Sync other submissions from cloud first, merge ours, and push to database
-    const cloudMsgs = await fetchCloudMessages();
-    const mergedMap = new Map();
+    // Fetch fresh cloud messages directly and merge ONLY our new submission into it
+    const cloudMsgs = await fetchCloudMessages() || [];
+    const validCloudMsgs = cloudMsgs.filter(msg => msg && typeof msg === 'object');
+    const updatedList = [newMsg, ...validCloudMsgs];
 
-    // 1. Put our local state in map (including the new submission)
-    customMessages.forEach(msg => {
-      if (msg && msg.id) mergedMap.set(msg.id, msg);
+    // Deduplicate list by ID
+    const uniqueMap = new Map();
+    updatedList.forEach(msg => {
+      if (msg && msg.id) uniqueMap.set(msg.id, msg);
     });
 
-    // 2. Put cloud messages in map (deduplicated)
-    if (cloudMsgs) {
-      cloudMsgs.forEach(msg => {
-        if (msg && msg.id) mergedMap.set(msg.id, msg);
-      });
-    }
-
-    // 3. Re-sort
-    const mergedList = Array.from(mergedMap.values());
-    mergedList.sort((a, b) => {
+    const finalSortedList = Array.from(uniqueMap.values());
+    finalSortedList.sort((a, b) => {
       const tA = parseInt(a.id.split('-')[1]) || 0;
       const tB = parseInt(b.id.split('-')[1]) || 0;
       return tB - tA;
     });
 
-    customMessages = mergedList;
+    customMessages = finalSortedList;
 
     try {
       localStorage.setItem('rapha_guestbook_v2', JSON.stringify(customMessages));
@@ -2092,8 +2089,8 @@ function initGuestbookWidget() {
   // Run cloud syncing
   syncMessages();
 
-  // Set up 10s background polling
-  setInterval(syncMessages, 10000);
+  // Set up 8s background polling
+  setInterval(syncMessages, 8000);
 }
 
 // --- DYNAMIC BACKGROUND SLIDESHOW ---
